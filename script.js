@@ -46,7 +46,7 @@ scene.add(stars);
 // Model 3D
 const loader = new GLTFLoader();
 let model = null, floatUp = true;
-loader.load('/model.glb', gltf => {
+loader.load('model.glb', gltf => {
   model = gltf.scene;
   model.scale.set(1.5, 1.5, 1.5);
   model.position.set(0, -1.5, 0);
