@@ -1,19 +1,3 @@
-import * as THREE from './libs/three.module.js';
-import { GLTFLoader } from './libs/GLTFLoader.js';
-
-// Use global GSAP if loaded via script tag (libs/gsap.min.js + ScrollTrigger)
-const gsap = window.gsap || null;
-const ScrollTrigger = window.ScrollTrigger || null;
-if (gsap && ScrollTrigger) {
-  try { gsap.registerPlugin(ScrollTrigger); } catch(e) { console.warn('GSAP register plugin failed', e); }
-}
-
-// If GSAP not present, we still continue but animations may not run.
-if (!gsap) {
-  console.warn('GSAP not found. Animations will be disabled. Please place gsap.min.js and ScrollTrigger.min.js into ./libs/');
-}
-
-// --- Begin original script logic (kept intact) ---
 import * as THREE from 'three';
 import { GLTFLoader } from 'GLTFLoader';
 
