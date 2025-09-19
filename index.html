@@ -5,17 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Portfolio - Thifaaldz</title>
   <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-        "GLTFLoader": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js"
-      }
-    }
-  </script>
+  <!-- Local libs (place the CSS/JS files into ./libs/) -->
+  <link rel="stylesheet" href="./libs/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="./libs/fontawesome.min.css" />
 </head>
 <body>
   <!-- HERO -->
@@ -147,10 +139,10 @@
 
   <div class="cursor"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <!-- Ubah baris terakhir -->
-<script type="module" src="./script.js?v=2"></script>
+  <!-- Local JS (place the files into ./libs/) -->
+  <script src="./libs/gsap.min.js"></script>
+  <script src="./libs/ScrollTrigger.min.js"></script>
+  <script src="./libs/swiper-bundle.min.js"></script>
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
