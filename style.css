@@ -22,6 +22,7 @@ html,body {
 }
 .panel.show { opacity:1; transform:translateY(0); }
 
+/* HERO */
 .hero-content {
   display:flex;
   align-items:center;
@@ -29,7 +30,7 @@ html,body {
   gap:2.5rem;
   max-width:1200px;
   width:100%;
-  flex-wrap:wrap; /* biar rapi di mobile */
+  flex-wrap:wrap;
 }
 .hero-left, .hero-right { flex:1 1 300px; }
 .hero-right { text-align:left; }
@@ -49,11 +50,62 @@ html,body {
 }
 .panel p { font-size:clamp(1rem,2.5vw,1.2rem); max-width:700px; line-height:1.6; }
 
-/* Skills slider */
-.skills-slider { overflow:hidden; width:100%; margin-top:20px; }
-.slide-track { display:flex; gap:40px; animation:scroll 20s linear infinite; }
-.slide-track img { width:clamp(40px,6vw,60px); height:auto; }
-@keyframes scroll { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+/* Skills section */
+.skills-slider { width:100%; margin-top:20px; overflow:hidden; position:relative; }
+.slide-track {
+  display:flex;
+  gap:24px;
+  width:calc(200%); /* track 2x panjang */
+  animation:scroll 25s linear infinite;
+}
+.slide-track img {
+  width:clamp(40px,6vw,60px);
+  height:auto;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  cursor:pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  position: relative;
+}
+
+/* Hover effect */
+.slide-track img:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 10px #ffd08a);
+}
+
+/* Tooltip */
+.slide-track img::after {
+  content: attr(alt);
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+.slide-track img:hover::after {
+  opacity: 1;
+}
+
+/* Desktop: ikon lebih besar */
+@media (min-width:1024px) {
+  .slide-track img {
+    width:70px;
+    height:70px;
+  }
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
 
 /* Project carousel */
 .project-carousel { position:relative; max-width:800px; width:100%; margin:0 auto; }

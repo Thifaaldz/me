@@ -58,6 +58,18 @@ if(cursor){
   });
 }
 
+/* Efek klik pada ikon skill: bounce + spin */
+document.querySelectorAll('.slide-track img').forEach(icon => {
+  icon.addEventListener('click', () => {
+    icon.style.transition = 'transform 0.6s ease';
+    icon.style.transform = 'scale(1.3) rotate(360deg)';
+    setTimeout(() => {
+      icon.style.transition = 'transform 0.3s ease';
+      icon.style.transform = 'scale(1)';
+    }, 600);
+  });
+});
+
 /* Three.js */
 const canvas=document.getElementById("three-canvas");
 const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
