@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Portfolio - Thifaaldz</title>
   <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="./libs/swiper-bundle.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
+  <!-- CDN hanya untuk Three.js -->
   <script type="importmap">
     {
       "imports": {
@@ -29,7 +28,6 @@
         <p>Selamat datang di portfolio saya.<br/>Scroll ke bawah untuk mengenal saya lebih lanjut 🚀</p>
       </div>
     </div>
-    <canvas id="three-canvas"></canvas>
   </section>
 
   <!-- ABOUT -->
@@ -42,16 +40,16 @@
     </p>
 
     <h3>Keahlian</h3>
-    <div class="swiper skills-swiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="./icons/html5.svg" alt="HTML"></div>
-        <div class="swiper-slide"><img src="./icons/css3.svg" alt="CSS"></div>
-        <div class="swiper-slide"><img src="./icons/js.svg" alt="JavaScript"></div>
-        <div class="swiper-slide"><img src="./icons/php.svg" alt="PHP"></div>
-        <div class="swiper-slide"><img src="./icons/laravel.svg" alt="Laravel"></div>
-        <div class="swiper-slide"><img src="./icons/react.svg" alt="React"></div>
-        <div class="swiper-slide"><img src="./icons/python.svg" alt="Python"></div>
-        <div class="swiper-slide"><img src="./icons/mysql.svg" alt="MySQL"></div>
+    <div class="skills-slider">
+      <div class="slide-track">
+        <img src="./icons/html5.svg" alt="HTML">
+        <img src="./icons/css3.svg" alt="CSS">
+        <img src="./icons/js.svg" alt="JavaScript">
+        <img src="./icons/php.svg" alt="PHP">
+        <img src="./icons/laravel.svg" alt="Laravel">
+        <img src="./icons/react.svg" alt="React">
+        <img src="./icons/python.svg" alt="Python">
+        <img src="./icons/mysql.svg" alt="MySQL">
       </div>
     </div>
   </section>
@@ -59,78 +57,39 @@
   <!-- PROJECTS -->
   <section id="projects" class="panel projects">
     <h2>Projek Saya</h2>
-    <div class="swiper projects-swiper">
-      <div class="swiper-wrapper">
-        <!-- ERP Project -->
-        <div class="swiper-slide">
-          <div class="project-slide">
-            <div class="project-left">
-              <div class="swiper project-images-swiper">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide"><img src="./projects/erp1.jpg" alt="ERP Screenshot 1"></div>
-                  <div class="swiper-slide"><img src="./projects/erp2.jpg" alt="ERP Screenshot 2"></div>
-                  <div class="swiper-slide"><img src="./projects/erp3.jpg" alt="ERP Screenshot 3"></div>
-                </div>
-                <div class="swiper-pagination"></div>
-              </div>
-            </div>
-            <div class="project-right">
-              <h3>ERP Management Dashboard</h3>
-              <p>Sistem ERP sederhana untuk manajemen inventory, purchase order, dan laporan penjualan.</p>
-              <div class="project-meta"><span class="tag">Laravel</span><span class="tag">React</span><span class="tag">MySQL</span></div>
-              <a class="btn small" href="https://github.com/thifaaldz" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            </div>
-          </div>
+    <div class="project-carousel">
+      <div class="project-slide active">
+        <div class="project-images">
+          <img src="./projects/erp1.jpg" alt="ERP" class="active">
+          <img src="./projects/erp2.jpg" alt="ERP">
+          <img src="./projects/erp3.jpg" alt="ERP">
         </div>
-
-        <!-- LMS Project -->
-        <div class="swiper-slide">
-          <div class="project-slide">
-            <div class="project-left">
-              <div class="swiper project-images-swiper">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide"><img src="./projects/lms1.jpg" alt="LMS Screenshot 1"></div>
-                  <div class="swiper-slide"><img src="./projects/lms2.jpg" alt="LMS Screenshot 2"></div>
-                  <div class="swiper-slide"><img src="./projects/lms3.jpg" alt="LMS Screenshot 3"></div>
-                </div>
-                <div class="swiper-pagination"></div>
-              </div>
-            </div>
-            <div class="project-right">
-              <h3>Learning Management System</h3>
-              <p>Aplikasi LMS untuk pembelajaran online dengan fitur kelas, kuis, dan forum diskusi.</p>
-              <div class="project-meta"><span class="tag">PHP</span><span class="tag">Laravel</span><span class="tag">MySQL</span></div>
-              <a class="btn small" href="https://github.com/thifaaldz" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- AI Project -->
-        <div class="swiper-slide">
-          <div class="project-slide">
-            <div class="project-left">
-              <div class="swiper project-images-swiper">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide"><img src="./projects/ai1.jpg" alt="AI Screenshot 1"></div>
-                  <div class="swiper-slide"><img src="./projects/ai2.jpg" alt="AI Screenshot 2"></div>
-                  <div class="swiper-slide"><img src="./projects/ai3.jpg" alt="AI Screenshot 3"></div>
-                </div>
-                <div class="swiper-pagination"></div>
-              </div>
-            </div>
-            <div class="project-right">
-              <h3>Machine Learning Classifier</h3>
-              <p>Model klasifikasi berbasis Python (scikit-learn) untuk prediksi data bisnis.</p>
-              <div class="project-meta"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">Pandas</span></div>
-              <a class="btn small" href="https://github.com/thifaaldz" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            </div>
-          </div>
-        </div>
-
+        <h3>ERP Management Dashboard</h3>
+        <p>Sistem ERP sederhana untuk manajemen inventory, purchase order, dan laporan penjualan.</p>
       </div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-pagination"></div>
+
+      <div class="project-slide">
+        <div class="project-images">
+          <img src="./projects/lms1.jpg" alt="LMS" class="active">
+          <img src="./projects/lms2.jpg" alt="LMS">
+          <img src="./projects/lms3.jpg" alt="LMS">
+        </div>
+        <h3>Learning Management System</h3>
+        <p>Aplikasi LMS untuk pembelajaran online dengan fitur kelas, kuis, dan forum diskusi.</p>
+      </div>
+
+      <div class="project-slide">
+        <div class="project-images">
+          <img src="./projects/ai1.jpg" alt="AI" class="active">
+          <img src="./projects/ai2.jpg" alt="AI">
+          <img src="./projects/ai3.jpg" alt="AI">
+        </div>
+        <h3>Machine Learning Classifier</h3>
+        <p>Model klasifikasi berbasis Python (scikit-learn) untuk prediksi data bisnis.</p>
+      </div>
+
+      <button class="carousel-btn prev">‹</button>
+      <button class="carousel-btn next">›</button>
     </div>
   </section>
 
@@ -138,20 +97,25 @@
   <section id="contact" class="panel contact">
     <h2>Hubungi Saya</h2>
     <div class="contact-links">
-      <a href="mailto:muhammadthifaaldzaki@gmail.com"><i class="fas fa-envelope"></i> Email</a>
-      <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-      <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-      <a href="https://github.com/thifaaldz" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      <a href="mailto:muhammadthifaaldzaki@gmail.com">
+        <img src="./icons/email.svg" width="20"> Email
+      </a>
+      <a href="https://instagram.com/" target="_blank">
+        <img src="./icons/instagram.svg" width="20"> Instagram
+      </a>
+      <a href="https://linkedin.com/" target="_blank">
+        <img src="./icons/linkedin.svg" width="20"> LinkedIn
+      </a>
+      <a href="https://github.com/thifaaldz" target="_blank">
+        <img src="./icons/github.svg" width="20"> GitHub
+      </a>
     </div>
   </section>
 
+  <!-- Canvas 3D kecil di bawah -->
+  <canvas id="three-canvas"></canvas>
   <div class="cursor"></div>
 
-   <script src="./libs/gsap.min.js"></script>
-  <script src="./libs/ScrollTrigger.min.js"></script>
-  <script src="./libs/swiper-bundle.min.js"></script>
-  <script src="./libs/three.min.js"></script>
-  <script src="./libs/GLTFLoader.js"></script>
-  <script type="module" src="/script.js"></script>
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
