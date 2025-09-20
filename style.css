@@ -116,7 +116,6 @@ html,body {
   opacity:0; 
   transition:opacity 1s ease;
 }
-
 .project-images img.active { opacity:1; }
 
 .carousel-btn {
@@ -256,4 +255,53 @@ html,body {
   z-index:10;
   pointer-events:none;
   background:transparent;
+}
+
+/* ============================= */
+/* RESPONSIVE FIXES */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  .hero-right {
+    text-align: center;
+  }
+  .project-images {
+    height: auto;
+    min-height: 200px;
+  }
+  .project-images img {
+    object-fit: contain;
+    max-height: 250px;
+  }
+  #three-canvas {
+    width: 80%;
+    height: auto;
+    max-height: 200px;
+    bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel {
+    padding: 2rem 1rem;
+  }
+  .panel h1, .panel h2 {
+    font-size: 1.5rem;
+  }
+  .panel p {
+    font-size: 0.95rem;
+  }
+  .project-tech img {
+    width: 28px;
+    height: 28px;
+  }
+  .btn-github {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
 }
