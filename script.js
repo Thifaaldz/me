@@ -145,17 +145,13 @@ if(track){
   track.style.setProperty("--scroll-distance",`-${distance}px`);
 }
 
-/* Accordion Pendidikan dengan expand card */
+/* Pendidikan: klik card penuh untuk expand/collapse */
 document.querySelectorAll(".edu-item").forEach(item => {
-  const title = item.querySelector(".edu-title");
-  if(title){
-    title.addEventListener("click", () => {
-      item.classList.toggle("expanded");
-      title.classList.toggle("active");
-      const details = item.querySelector(".edu-details");
-      if(details){
-        details.classList.toggle("show");
-      }
-    });
-  }
+  item.addEventListener("click", () => {
+    item.classList.toggle("expanded");
+    const details = item.querySelector(".edu-details");
+    if(details){
+      details.classList.toggle("show");
+    }
+  });
 });
