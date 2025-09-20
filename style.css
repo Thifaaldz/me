@@ -55,8 +55,8 @@ html,body {
 .slide-track {
   display:flex;
   gap:24px;
-  width:200%;
   animation: scroll 25s linear infinite;
+  will-change: transform;
 }
 .slide-track img {
   width:clamp(40px,6vw,60px);
@@ -97,6 +97,7 @@ html,body {
   .slide-track img { width:70px; height:70px; }
 }
 
+/* Loop animasi */
 @keyframes scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
