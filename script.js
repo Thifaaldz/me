@@ -144,3 +144,14 @@ if(track){
   }
   track.style.setProperty("--scroll-distance",`-${distance}px`);
 }
+
+// Accordion Pendidikan
+document.querySelectorAll(".edu-title").forEach(title => {
+  title.addEventListener("click", () => {
+    title.classList.toggle("active");
+    const details = title.nextElementSibling.nextElementSibling; 
+    if(details){
+      details.classList.toggle("show");
+    }
+  });
+});
