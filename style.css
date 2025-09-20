@@ -97,10 +97,10 @@ html,body {
   .slide-track img { width:70px; height:70px; }
 }
 
-/* Loop animasi */
+/* Loop animasi terbatas */
 @keyframes scroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-30%); } /* hanya geser 30% */
 }
 
 /* Project carousel */
