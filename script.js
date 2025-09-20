@@ -134,9 +134,13 @@ document.addEventListener("mousemove",e=>{
 window.addEventListener("resize",resizeRenderer);
 resizeRenderer();
 
-// Hitung panjang isi track untuk animasi mulus
-const track = document.querySelector(".slide-track");
+/* Hitung panjang 4 ikon pertama untuk animasi slider */
+const track=document.querySelector(".slide-track");
 if(track){
-  const trackWidth = track.scrollWidth / 2; // karena isinya dobel
-  track.style.setProperty("--scroll-distance", `-${trackWidth}px`);
+  const icons=track.querySelectorAll("img");
+  let distance=0;
+  for(let i=0;i<4 && i<icons.length;i++){
+    distance+=icons[i].offsetWidth+24; // lebar + gap antar ikon
+  }
+  track.style.setProperty("--scroll-distance",`-${distance}px`);
 }

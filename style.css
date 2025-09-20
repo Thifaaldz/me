@@ -51,7 +51,14 @@ html,body {
 .panel p { font-size:clamp(1rem,2.5vw,1.2rem); max-width:700px; line-height:1.6; }
 
 /* Skills slider */
-.skills-slider { width:100%; margin-top:20px; overflow:hidden; }
+.skills-slider {
+  width:100%;
+  margin-top:20px;
+  overflow:hidden;
+  display:flex;
+  justify-content:center; /* center track */
+}
+
 .slide-track {
   display:flex;
   gap:24px;
@@ -101,7 +108,7 @@ html,body {
 /* Keyframes pakai var */
 @keyframes scroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(var(--scroll-distance, -50%)); }
+  to   { transform: translateX(var(--scroll-distance, -400px)); }
 }
 
 /* Project carousel */
