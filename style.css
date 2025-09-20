@@ -58,6 +58,7 @@ html,body {
   animation: scroll 25s linear infinite;
   will-change: transform;
 }
+
 .slide-track img {
   width:clamp(40px,6vw,60px);
   height:auto;
@@ -97,10 +98,10 @@ html,body {
   .slide-track img { width:70px; height:70px; }
 }
 
-/* Loop animasi terbatas */
+/* Keyframes pakai var */
 @keyframes scroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(-30%); } /* hanya geser 30% */
+  to   { transform: translateX(var(--scroll-distance, -50%)); }
 }
 
 /* Project carousel */

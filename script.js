@@ -133,3 +133,10 @@ document.addEventListener("mousemove",e=>{
 
 window.addEventListener("resize",resizeRenderer);
 resizeRenderer();
+
+// Hitung panjang isi track untuk animasi mulus
+const track = document.querySelector(".slide-track");
+if(track){
+  const trackWidth = track.scrollWidth / 2; // karena isinya dobel
+  track.style.setProperty("--scroll-distance", `-${trackWidth}px`);
+}
