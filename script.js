@@ -58,7 +58,7 @@ if(cursor){
   });
 }
 
-/* Efek klik pada ikon skill: bounce + spin */
+/* Efek klik pada ikon skill */
 document.querySelectorAll('.slide-track img').forEach(icon => {
   icon.addEventListener('click', () => {
     icon.style.transition = 'transform 0.6s ease';
@@ -145,13 +145,17 @@ if(track){
   track.style.setProperty("--scroll-distance",`-${distance}px`);
 }
 
-// Accordion Pendidikan
-document.querySelectorAll(".edu-title").forEach(title => {
-  title.addEventListener("click", () => {
-    title.classList.toggle("active");
-    const details = title.nextElementSibling.nextElementSibling; 
-    if(details){
-      details.classList.toggle("show");
-    }
-  });
+/* Accordion Pendidikan dengan expand card */
+document.querySelectorAll(".edu-item").forEach(item => {
+  const title = item.querySelector(".edu-title");
+  if(title){
+    title.addEventListener("click", () => {
+      item.classList.toggle("expanded");
+      title.classList.toggle("active");
+      const details = item.querySelector(".edu-details");
+      if(details){
+        details.classList.toggle("show");
+      }
+    });
+  }
 });
