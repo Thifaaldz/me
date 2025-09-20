@@ -134,13 +134,13 @@ document.addEventListener("mousemove",e=>{
 window.addEventListener("resize",resizeRenderer);
 resizeRenderer();
 
-/* Hitung panjang 4 ikon pertama untuk animasi slider */
+/* Hitung panjang 4 ikon pertama untuk animasi bolak-balik */
 const track=document.querySelector(".slide-track");
 if(track){
   const icons=track.querySelectorAll("img");
   let distance=0;
   for(let i=0;i<4 && i<icons.length;i++){
-    distance+=icons[i].offsetWidth+24; // lebar + gap antar ikon
+    distance+=icons[i].offsetWidth+24;
   }
   track.style.setProperty("--scroll-distance",`-${distance}px`);
 }
