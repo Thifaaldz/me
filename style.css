@@ -56,16 +56,14 @@ html,body {
   margin-top:20px;
   overflow:hidden;
   display:flex;
-  justify-content:center; /* center track */
+  justify-content:center;
 }
-
 .slide-track {
   display:flex;
   gap:24px;
   animation: scroll 25s linear infinite;
   will-change: transform;
 }
-
 .slide-track img {
   width:clamp(40px,6vw,60px);
   height:auto;
@@ -74,14 +72,10 @@ html,body {
   transition: transform 0.3s ease, filter 0.3s ease;
   position: relative;
 }
-
-/* Hover effect */
 .slide-track img:hover {
   transform: scale(1.2);
   filter: drop-shadow(0 0 10px #ffd08a);
 }
-
-/* Tooltip */
 .slide-track img::after {
   content: attr(alt);
   position: absolute;
@@ -99,19 +93,15 @@ html,body {
   white-space: nowrap;
 }
 .slide-track img:hover::after { opacity: 1; }
-
-/* Desktop ikon lebih besar */
 @media (min-width:1024px) {
   .slide-track img { width:70px; height:70px; }
 }
-
-/* Keyframes pakai var */
 @keyframes scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(var(--scroll-distance, -400px)); }
 }
 
-/* Project carousel */
+/* Projects */
 .project-carousel { position:relative; max-width:800px; width:100%; margin:0 auto; }
 .project-slide { display:none; text-align:center; }
 .project-slide.active { display:block; }
@@ -135,6 +125,103 @@ html,body {
 }
 .carousel-btn.prev { left:10px; }
 .carousel-btn.next { right:10px; }
+
+/* Project tech + GitHub */
+.project-tech {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 15px 0;
+}
+.project-tech img {
+  width: 36px;
+  height: 36px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  transition: transform 0.3s ease;
+}
+.project-tech img:hover { transform: scale(1.2); }
+.btn-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.3s;
+}
+.btn-github:hover {
+  background: #ffd08a;
+  color: #0f3460;
+  transform: translateY(-3px);
+}
+
+/* Pendidikan */
+.education-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 40px auto;
+  max-width: 700px;
+  text-align: left;
+}
+.edu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+  transition: transform 0.3s ease, background 0.3s ease;
+  cursor: pointer;
+}
+.edu-item:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 208, 138, 0.08);
+}
+.edu-icon {
+  font-size: 28px;
+  color: #ffd08a;
+  margin-top: 6px;
+}
+.edu-content { flex: 1; }
+.edu-content h4 {
+  font-size: 1.3rem;
+  margin-bottom: 5px;
+  color: #fff;
+  position: relative;
+  padding-right: 24px;
+  cursor: pointer;
+}
+.edu-content h4::after {
+  content: "\25BC";
+  font-size: 0.9rem;
+  position: absolute;
+  right: 0;
+  top: 4px;
+  transition: transform 0.3s;
+}
+.edu-content h4.active::after { transform: rotate(180deg); }
+.edu-details {
+  list-style: disc inside;
+  margin-top: 10px;
+  padding-left: 10px;
+  display: none;
+  color: #d1d9e6;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.edu-details.show {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 /* Contact */
 .contact-links { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; }
@@ -166,82 +253,4 @@ html,body {
   z-index:10;
   pointer-events:none;
   background:transparent;
-}
-/* Container pendidikan (atur jarak antar card) */
-.education-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;              /* atur JARAK antar card */
-  margin: 40px auto;      /* spasi atas-bawah seluruh blok */
-  max-width: 700px;
-  text-align: left;
-}
-
-/* Card style for education */
-.edu-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;              /* jarak antara ikon 🎓 dan teks */
-  background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
-  transition: transform 0.3s ease, background 0.3s ease;
-  cursor: pointer;
-}
-
-.edu-item:hover {
-  transform: translateY(-6px);
-  background: rgba(255, 208, 138, 0.08);
-}
-
-/* Ikon */
-.edu-icon {
-  font-size: 28px;
-  color: #ffd08a;
-  margin-top: 6px;
-}
-
-/* Judul pendidikan */
-.edu-content { flex: 1; }
-.edu-content h4 {
-  font-size: 1.3rem;
-  margin-bottom: 5px;
-  color: #fff;
-  position: relative;
-  padding-right: 24px;
-  cursor: pointer;
-}
-
-/* Panah indikator */
-.edu-content h4::after {
-  content: "\25BC";
-  font-size: 0.9rem;
-  position: absolute;
-  right: 0;
-  top: 4px;
-  transition: transform 0.3s;
-}
-.edu-content h4.active::after {
-  transform: rotate(180deg);
-}
-
-/* Detail list */
-.edu-details {
-  list-style: disc inside;
-  margin-top: 10px;
-  padding-left: 10px;
-  display: none;
-  color: #d1d9e6;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-.edu-details.show {
-  display: block;
-  animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to   { opacity: 1; transform: translateY(0); }
 }
