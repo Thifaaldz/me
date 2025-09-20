@@ -50,13 +50,13 @@ html,body {
 }
 .panel p { font-size:clamp(1rem,2.5vw,1.2rem); max-width:700px; line-height:1.6; }
 
-/* Skills section */
-.skills-slider { width:100%; margin-top:20px; overflow:hidden; position:relative; }
+/* Skills slider */
+.skills-slider { width:100%; margin-top:20px; overflow:hidden; }
 .slide-track {
   display:flex;
   gap:24px;
-  width:calc(200%); /* track 2x panjang */
-  animation:scroll 25s linear infinite;
+  width:200%;
+  animation: scroll 25s linear infinite;
 }
 .slide-track img {
   width:clamp(40px,6vw,60px);
@@ -90,16 +90,11 @@ html,body {
   transition: opacity 0.3s ease;
   white-space: nowrap;
 }
-.slide-track img:hover::after {
-  opacity: 1;
-}
+.slide-track img:hover::after { opacity: 1; }
 
-/* Desktop: ikon lebih besar */
+/* Desktop ikon lebih besar */
 @media (min-width:1024px) {
-  .slide-track img {
-    width:70px;
-    height:70px;
-  }
+  .slide-track img { width:70px; height:70px; }
 }
 
 @keyframes scroll {
@@ -133,10 +128,7 @@ html,body {
 .carousel-btn.next { right:10px; }
 
 /* Contact */
-.contact-links {
-  display:flex; flex-wrap:wrap; gap:16px;
-  justify-content:center;
-}
+.contact-links { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; }
 .contact-links a {
   color:white; text-decoration:none;
   font-size:clamp(1rem,2.5vw,1.2rem);
@@ -156,7 +148,7 @@ html,body {
   z-index:9999;
 }
 
-/* Canvas 3D kecil */
+/* Canvas 3D */
 #three-canvas {
   position:fixed; bottom:20px; left:50%;
   transform:translateX(-50%);
