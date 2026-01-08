@@ -1499,6 +1499,28 @@ body {
    MOBILE PERFORMANCE OPTIMIZATIONS
 ===================== */
 @media (max-width: 768px) {
+  /* Force all content to be visible immediately on mobile */
+  .reveal,
+  .reveal.active {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .reveal.active .typewriter {
+    animation: none !important;
+    width: auto !important;
+    border-right: none !important;
+    overflow: visible !important;
+    white-space: normal !important;
+  }
+
+  .reveal.active .code-line {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
   /* Disable expensive background effects on mobile */
   .bg-grid {
     display: none;
@@ -1553,13 +1575,14 @@ body {
 
   /* Simplify animations */
   .code-window-bg {
-    animation: fadeInUp 0.6s ease forwards;
-    float: none !important;
+    animation: none;
+    opacity: 1;
   }
 
   /* Disable all animations on hero content */
   .hero-content {
     animation: none;
+    opacity: 1;
   }
 
   /* Reduce glow intensity */
@@ -1605,13 +1628,6 @@ body {
     animation: none;
   }
 
-  /* Disable reveal animations on mobile for performance */
-  .reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
   /* Mobile - Stack vertically for profile section */
   .profile-split {
     flex-direction: column;
@@ -1641,7 +1657,6 @@ body {
     max-width: 340px;
     height: 220px;
     order: 1;
-    opacity: 1;
   }
 
   /* Reduce section padding on mobile */
@@ -1668,5 +1683,16 @@ body {
   .project-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+  }
+
+  /* Disable all animations on mobile */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Disable pulse animations on dots */
+  .dot {
+    animation: none !important;
   }
 }
