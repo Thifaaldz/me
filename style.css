@@ -738,8 +738,59 @@ body {
 /* Hide nav buttons on small screens */
 @media (max-width: 768px) {
   .lightbox-nav {
-    padding: 12px;
+    padding: 16px;
+    font-size: 2.2rem;
+    background: rgba(56, 189, 248, 0.1);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-prev {
+    left: 12px;
+  }
+
+  .lightbox-next {
+    right: 12px;
+  }
+
+  .lightbox-close {
+    top: 16px;
+    right: 18px;
+    font-size: 2.2rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(56, 189, 248, 0.1);
+    border-radius: 50%;
+  }
+
+  .lightbox-content {
+    max-width: 95vw;
+    max-height: 75vh;
+  }
+
+  .lightbox-caption {
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    bottom: 20px;
+    width: 90%;
+    text-align: center;
+  }
+}
+
+/* Touch-friendly improvements for very small screens */
+@media (max-width: 480px) {
+  .lightbox-nav {
+    padding: 14px;
     font-size: 2rem;
+    width: 50px;
+    height: 50px;
   }
 
   .lightbox-prev {
@@ -751,9 +802,22 @@ body {
   }
 
   .lightbox-close {
-    top: 16px;
-    right: 18px;
+    top: 12px;
+    right: 14px;
     font-size: 2rem;
+    width: 44px;
+    height: 44px;
+  }
+
+  .lightbox-content {
+    max-width: 98vw;
+    max-height: 70vh;
+  }
+
+  .lightbox-caption {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    bottom: 16px;
   }
 }
 
