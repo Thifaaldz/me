@@ -19,6 +19,48 @@ if (reveals.length) {
 }
 
 /* =====================
+   CURSOR CODE FOLLOWER
+===================== */
+const cursor = document.querySelector(".cursor-code");
+
+if (cursor) {
+  document.addEventListener("mousemove", e => {
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+  });
+
+  document.addEventListener("mouseenter", () => {
+    cursor.classList.add("active");
+  });
+
+  document.addEventListener("mouseleave", () => {
+    cursor.classList.remove("active");
+  });
+}
+
+/* =====================
+   SCROLL PROGRESS BAR (Code Style)
+===================== */
+const scrollProgress = document.createElement("div");
+scrollProgress.className = "scroll-progress";
+document.body.appendChild(scrollProgress);
+
+let lastScrollTop = 0;
+window.addEventListener("scroll", () => {
+  const st = window.pageYOffset || document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPercent = (st / scrollHeight) * 100;
+
+  scrollProgress.style.width = scrollPercent + "%";
+
+  // Binary scroll counter
+  const binaryValue = Math.floor(scrollPercent).toString(2).padStart(8, '0');
+  document.documentElement.style.setProperty('--scroll-binary', `"${binaryValue}"`);
+
+  lastScrollTop = st;
+});
+
+/* =====================
    PARALLAX BACKGROUND GLOW
 ===================== */
 const glow = document.querySelector(".bg-glow");
