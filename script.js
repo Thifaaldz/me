@@ -142,6 +142,16 @@ class ImageLightbox {
       img.addEventListener("click", e => this.open(e.target));
     });
 
+    // Add click handlers to certificate modal images
+    const certImages = document.querySelectorAll(".cert-modal-img");
+    certImages.forEach(img => {
+      img.style.cursor = "pointer";
+      img.addEventListener("click", e => {
+        // Open single certificate image in lightbox
+        this.openSingle(img.src, img.alt || "Certificate");
+      });
+    });
+
     // Navigation buttons - only if elements exist
     if (this.prevBtn) {
       this.prevBtn.addEventListener("click", () => this.navigate(-1));
@@ -207,6 +217,32 @@ class ImageLightbox {
     this.lightbox.classList.remove("active");
     this.isOpen = false;
     document.body.style.overflow = "";
+  }
+
+  // Open a single image (for certificates)
+  openSingle(src, alt) {
+    if (!this.lightboxImg) return;
+    
+    this.currentGallery = [];
+    this.currentIndex = 0;
+    
+    // Hide navigation for single image
+    if (this.prevBtn) this.prevBtn.style.display = "none";
+    if (this.nextBtn) this.nextBtn.style.display = "none";
+    
+    // Show image
+    this.lightboxImg.src = src;
+    this.lightboxImg.alt = alt;
+    
+    // Show caption
+    if (this.caption) {
+      this.caption.textContent = alt;
+    }
+    
+    // Show lightbox
+    this.lightbox.classList.add("active");
+    this.isOpen = true;
+    document.body.style.overflow = "hidden";
   }
 
   navigate(direction) {
