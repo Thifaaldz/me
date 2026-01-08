@@ -44,123 +44,17 @@ if (reveals.length) {
 }
 
 /* =====================
-   CURSOR CODE FOLLOWER
-===================== */
-const cursor = document.querySelector(".cursor-code");
-
-if (cursor) {
-  document.addEventListener("mousemove", e => {
-    cursor.style.left = e.clientX + "px";
-    cursor.style.top = e.clientY + "px";
-  });
-
-  document.addEventListener("mouseenter", () => {
-    cursor.classList.add("active");
-  });
-
-  document.addEventListener("mouseleave", () => {
-    cursor.classList.remove("active");
-  });
-}
-
-/* =====================
-   SCROLL PROGRESS BAR (Code Style)
-===================== */
-// Only create scroll progress on desktop
-if (!isMobile()) {
-  const scrollProgress = document.createElement("div");
-  scrollProgress.className = "scroll-progress";
-  document.body.appendChild(scrollProgress);
-
-  // Use throttled scroll handler for better performance
-  const updateScrollProgress = throttle(() => {
-    const st = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-    
-    if (scrollHeight > 0) {
-      const scrollPercent = (st / scrollHeight) * 100;
-      scrollProgress.style.width = scrollPercent + "%";
-
-      // Binary scroll counter
-      const binaryValue = Math.floor(scrollPercent).toString(2).padStart(8, '0');
-      document.documentElement.style.setProperty('--scroll-binary', `"${binaryValue}"`);
-    }
-  }, 16); // ~60fps throttle
-
-  window.addEventListener("scroll", updateScrollProgress, { passive: true });
-}
-
-/* =====================
-   PARALLAX BACKGROUND GLOW
-===================== */
-const glow = document.querySelector(".bg-glow");
-
-// Only enable parallax on desktop for better mobile performance
-if (glow && !isMobile()) {
-  const updateGlow = throttle(e => {
-    // disable parallax when modal open
-    if (document.body.style.overflow === "hidden") return;
-
-    const x = (e.clientX / window.innerWidth - 0.5) * 60;
-    const y = (e.clientY / window.innerHeight - 0.5) * 60;
-
-    glow.style.transform = `translate(${x}px, ${y}px)`;
-  }, 16);
-
-  document.addEventListener("mousemove", updateGlow);
-}
-
-/* =====================
-   PROJECT CARD 3D HOVER
-===================== */
-document.querySelectorAll(".project-card").forEach(card => {
-
-  // Only add 3D hover effect on desktop
-  if (!isMobile()) {
-    card.addEventListener("mousemove", e => {
-      // stop effect when modal open
-      if (document.body.style.overflow === "hidden") return;
-
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const rotateY = ((x / rect.width) - 0.5) * 10;
-      const rotateX = ((y / rect.height) - 0.5) * -10;
-
-      card.style.transform = `
-        perspective(1000px)
-        rotateX(${rotateX}deg)
-        rotateY(${rotateY}deg)
-        translateY(-8px)
-      `;
-    });
-
-    card.addEventListener("mouseleave", () => {
-      card.style.transform = "";
-    });
-  }
-
-  /* =====================
-     OPEN MODAL (RESET CARD)
-  ===================== */
-  card.addEventListener("click", () => {
-    card.style.transform = ""; // reset hover transform
-  });
-
-});
-
-/* =====================
    MODAL HANDLER (PROJECTS)
 ===================== */
 document.querySelectorAll(".project-card").forEach(card => {
   card.addEventListener("click", () => {
     const modalId = card.getAttribute("data-modal");
-    const modal = document.getElementById(modalId);
-
-    if (modal) {
-      modal.classList.add("active");
-      document.body.style.overflow = "hidden";
+    if (modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
     }
   });
 });
@@ -186,6 +80,9 @@ document.querySelectorAll(".timeline-item[data-modal]").forEach(item => {
   });
 });
 
+/* =====================
+   MODAL CLOSE HANDLERS
+===================== */
 document.querySelectorAll(".modal-close").forEach(btn => {
   btn.addEventListener("click", () => {
     closeModal(btn.closest(".modal-overlay"));
@@ -217,6 +114,12 @@ function closeModal(modal) {
 class ImageLightbox {
   constructor() {
     this.lightbox = document.getElementById("image-lightbox");
+    
+    // Guard against missing lightbox element
+    if (!this.lightbox) {
+      return;
+    }
+    
     this.lightboxImg = this.lightbox.querySelector(".lightbox-content img");
     this.caption = this.lightbox.querySelector(".lightbox-caption");
     this.closeBtn = this.lightbox.querySelector(".lightbox-close");
@@ -231,18 +134,26 @@ class ImageLightbox {
   }
 
   init() {
-    // Add click handlers to gallery images
-    document.querySelectorAll(".modal-gallery img").forEach(img => {
+    // Add click handlers to gallery images - only if elements exist
+    const galleryImages = document.querySelectorAll(".modal-gallery img");
+    
+    galleryImages.forEach(img => {
       img.style.cursor = "pointer";
       img.addEventListener("click", e => this.open(e.target));
     });
 
-    // Navigation buttons
-    this.prevBtn.addEventListener("click", () => this.navigate(-1));
-    this.nextBtn.addEventListener("click", () => this.navigate(1));
+    // Navigation buttons - only if elements exist
+    if (this.prevBtn) {
+      this.prevBtn.addEventListener("click", () => this.navigate(-1));
+    }
+    if (this.nextBtn) {
+      this.nextBtn.addEventListener("click", () => this.navigate(1));
+    }
 
     // Close handlers
-    this.closeBtn.addEventListener("click", () => this.close());
+    if (this.closeBtn) {
+      this.closeBtn.addEventListener("click", () => this.close());
+    }
     this.lightbox.addEventListener("click", e => {
       if (e.target === this.lightbox) this.close();
     });
@@ -257,10 +168,17 @@ class ImageLightbox {
   }
 
   open(imgElement) {
+    if (!imgElement || !this.lightboxImg) return;
+    
     // Get all images in the same gallery
     const gallery = imgElement.closest(".modal-gallery");
+    if (!gallery) return;
+    
     this.currentGallery = Array.from(gallery.querySelectorAll("img"));
+    if (this.currentGallery.length === 0) return;
+    
     this.currentIndex = this.currentGallery.indexOf(imgElement);
+    if (this.currentIndex === -1) this.currentIndex = 0;
 
     // Update navigation visibility
     this.updateNavVisibility();
@@ -270,11 +188,13 @@ class ImageLightbox {
     this.lightboxImg.alt = imgElement.alt || "Project screenshot";
 
     // Show caption if available
-    const projectTitle = imgElement.closest(".modal").querySelector("h3");
-    if (projectTitle) {
-      this.caption.textContent = `${projectTitle.textContent} (${this.currentIndex + 1}/${this.currentGallery.length})`;
-    } else {
-      this.caption.textContent = `${this.currentIndex + 1}/${this.currentGallery.length}`;
+    if (this.caption) {
+      const projectTitle = imgElement.closest(".modal")?.querySelector("h3");
+      if (projectTitle) {
+        this.caption.textContent = `${projectTitle.textContent} (${this.currentIndex + 1}/${this.currentGallery.length})`;
+      } else {
+        this.caption.textContent = `${this.currentIndex + 1}/${this.currentGallery.length}`;
+      }
     }
 
     // Show lightbox
@@ -290,6 +210,8 @@ class ImageLightbox {
   }
 
   navigate(direction) {
+    if (!this.currentGallery || this.currentGallery.length === 0) return;
+
     this.currentIndex += direction;
 
     // Wrap around
@@ -300,15 +222,19 @@ class ImageLightbox {
     }
 
     const img = this.currentGallery[this.currentIndex];
+    if (!img || !this.lightboxImg) return;
+    
     this.lightboxImg.src = img.src;
     this.lightboxImg.alt = img.alt || "Project screenshot";
 
     // Update caption
-    const projectTitle = img.closest(".modal").querySelector("h3");
-    if (projectTitle) {
-      this.caption.textContent = `${projectTitle.textContent} (${this.currentIndex + 1}/${this.currentGallery.length})`;
-    } else {
-      this.caption.textContent = `${this.currentIndex + 1}/${this.currentGallery.length}`;
+    if (this.caption) {
+      const projectTitle = img.closest(".modal")?.querySelector("h3");
+      if (projectTitle) {
+        this.caption.textContent = `${projectTitle.textContent} (${this.currentIndex + 1}/${this.currentGallery.length})`;
+      } else {
+        this.caption.textContent = `${this.currentIndex + 1}/${this.currentGallery.length}`;
+      }
     }
 
     this.updateNavVisibility();
@@ -316,13 +242,9 @@ class ImageLightbox {
 
   updateNavVisibility() {
     // Show/hide nav buttons based on gallery size
-    if (this.currentGallery.length <= 1) {
-      this.prevBtn.style.display = "none";
-      this.nextBtn.style.display = "none";
-    } else {
-      this.prevBtn.style.display = "block";
-      this.nextBtn.style.display = "block";
-    }
+    const showNav = this.currentGallery.length > 1;
+    if (this.prevBtn) this.prevBtn.style.display = showNav ? "block" : "none";
+    if (this.nextBtn) this.nextBtn.style.display = showNav ? "block" : "none";
   }
 }
 
@@ -330,3 +252,4 @@ class ImageLightbox {
 document.addEventListener("DOMContentLoaded", () => {
   new ImageLightbox();
 });
+
