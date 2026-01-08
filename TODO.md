@@ -1,44 +1,35 @@
-# Tech Stack Icons Implementation
+# Mobile Performance Optimization TODO
 
-## Changes Made ✓
+## Plan
+1. **CSS Optimizations** - Add GPU acceleration, disable heavy effects on mobile, add reduced motion support
+2. **JavaScript Optimizations** - Throttle scroll handlers, disable expensive effects on mobile
+3. **HTML Optimizations** - Add lazy loading to images
 
-### 1. Update index.html ✓
-- [x] Replace text-based tech badges with icon-based badges
-- [x] Add icon SVGs with labels for each technology
-- [x] Keep text-only badges for missing icons (Pentaho, n8n, Tesseract OCR)
+## Progress
+- [x] Optimize style.css for mobile performance
+- [x] Optimize script.js for mobile performance  
+- [x] Add lazy loading to images in index.html
 
-### 2. Update style.css ✓
-- [x] Add CSS styling for icon-based tech badges (`.tech-badge-icon`)
-- [x] Style for consistent look with hover effects with glow
+## Optimizations Applied:
 
-## Icon Mapping
-| Technology | Icon File | Status |
-|------------|-----------|--------|
-| Python | python.svg | ✓ |
-| PHP | php.svg | ✓ |
-| JavaScript | js.svg | ✓ |
-| Dart | dart.svg | ✓ |
-| SQL | mysql.svg | ✓ |
-| Laravel | laravel.svg | ✓ |
-| Filament | filament.svg | ✓ |
-| Livewire | laravel.svg (reused) | ✓ |
-| FastAPI | fastapi.svg | ✓ |
-| Flutter | flutter.svg | ✓ |
-| ERPNext | erpnext.svg | ✓ |
-| Pentaho | (text only) | ✓ |
-| Docker | docker.svg | ✓ |
-| Ubuntu | ubuntu.svg | ✓ |
-| MariaDB | mariadb.svg | ✓ |
-| Redis | redis.svg | ✓ |
-| n8n | (text only) | ✓ |
-| Tesseract OCR | (text only) | ✓ |
-| GIS | qgis.svg | ✓ |
-| Git | github.svg | ✓ |
-| Midtrans | midtrans.svg | ✓ |
+### CSS (style.css)
+- Added `prefers-reduced-motion` support for users who prefer reduced motion
+- Disabled expensive `binary-rain` animation on mobile
+- Disabled `cursor-code` follower on mobile
+- Reduced `backdrop-filter` blur on modals from 10px to 4px
+- Disabled 3D transforms on project cards on mobile
+- Simplified hover effects on mobile
+- Disabled pulsing dots animation on mobile
+- Disabled glow border animation on mobile
 
-## Tech Stack Categories
-1. **Languages** - Python, PHP, JavaScript, Dart, SQL
-2. **Frameworks** - Laravel, Filament, Livewire, FastAPI, Flutter
-3. **Systems** - ERPNext, Pentaho, Docker, Ubuntu, MariaDB, Redis
-4. **Tools** - n8n, Tesseract OCR, GIS, Git, Midtrans
+### JavaScript (script.js)
+- Added `throttle` utility function for scroll/mousemove handlers
+- Added `isMobile()` helper function
+- Throttled scroll progress updates to ~60fps
+- Disabled parallax effect on mobile
+- Disabled 3D card hover effect on mobile
+- Optimized IntersectionObserver to stop observing revealed elements
+
+### HTML (index.html)
+- Added `loading="lazy"` to all project card images
 

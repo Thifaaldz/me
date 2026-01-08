@@ -23,6 +23,35 @@ body {
   background: radial-gradient(circle at top, #111827, var(--bg-main));
   color: var(--text-main);
   overflow-x: hidden;
+  /* Improve scroll performance */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =====================
+   REDUCED MOTION SUPPORT
+===================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .binary-rain::before,
+  .binary-rain::after {
+    animation: none !important;
+  }
+
+  .cursor-code {
+    display: none !important;
+  }
+
+  .bg-glow {
+    animation: none !important;
+  }
 }
 
 /* =====================
@@ -1463,8 +1492,97 @@ body {
   }
 }
 
-/* Mobile - Stack vertically */
+/* =====================
+   MOBILE PERFORMANCE OPTIMIZATIONS
+===================== */
 @media (max-width: 768px) {
+  /* Disable expensive binary rain on mobile */
+  .binary-rain {
+    display: none;
+  }
+
+  /* Disable cursor follower on mobile (no hover) */
+  .cursor-code {
+    display: none;
+  }
+
+  /* Simplify glow effect */
+  .bg-glow {
+    opacity: 0.06;
+    filter: blur(120px);
+  }
+
+  /* Reduce backdrop-filter blur on mobile */
+  .modal-overlay {
+    backdrop-filter: blur(4px);
+  }
+
+  /* Disable 3D transforms on project cards */
+  .project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+  }
+
+  /* Simplify scroll progress */
+  .scroll-progress {
+    height: 2px;
+  }
+
+  /* Disable scanline effect */
+  .code-overlay::before {
+    display: none;
+  }
+
+  /* Simplify animations */
+  .code-window-bg {
+    animation: fadeInUp 0.6s ease forwards, none;
+    float: none !important;
+  }
+
+  /* Reduce glow intensity */
+  .btn.primary {
+    box-shadow: 0 0 15px var(--accent-glow);
+  }
+
+  /* Simplify skill card hover */
+  .skill-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 15px var(--accent-glow);
+  }
+
+  /* Simplify timeline hover */
+  .timeline-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Simplify tech badge hover */
+  .tech-badge-icon:hover,
+  .tech-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--accent-glow);
+  }
+
+  /* Disable pulsing dots animation */
+  .dot.red,
+  .dot.yellow,
+  .dot.green {
+    animation: none;
+    box-shadow: none;
+  }
+
+  /* Simplify section brackets */
+  .section h2::before,
+  .section h2::after {
+    animation: none;
+  }
+
+  /* Disable glow border animation */
+  .code-window-bg::before {
+    animation: none;
+  }
+
+  /* Mobile - Stack vertically for profile section */
   .profile-split {
     flex-direction: column;
     gap: 30px;
@@ -1498,7 +1616,5 @@ body {
     max-width: 340px;
     height: 220px;
     order: 1;
-    animation: slideInRight 0.8s ease 0.2s forwards, float 4s ease-in-out infinite 0.2s;
-    opacity: 0;
   }
 }

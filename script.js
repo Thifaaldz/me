@@ -1,18 +1,43 @@
 /* =====================
+   UTILITY FUNCTIONS
+===================== */
+// Throttle function for performance
+function throttle(func, limit) {
+  let inThrottle;
+  return function(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
+// Check if device is mobile
+function isMobile() {
+  return window.innerWidth <= 768;
+}
+
+/* =====================
    SCROLL REVEAL
 ===================== */
 const reveals = document.querySelectorAll(".reveal");
 
 if (reveals.length) {
+  // Use lower threshold on mobile for better performance
+  const threshold = isMobile() ? 0.1 : 0.15;
+  
   const observer = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add("active");
+          // Stop observing once revealed to improve performance
+          observer.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: threshold }
   );
 
   reveals.forEach(el => observer.observe(el));
@@ -45,28 +70,35 @@ const scrollProgress = document.createElement("div");
 scrollProgress.className = "scroll-progress";
 document.body.appendChild(scrollProgress);
 
-let lastScrollTop = 0;
-window.addEventListener("scroll", () => {
+// Use throttled scroll handler for better performance
+const updateScrollProgress = throttle(() => {
   const st = window.pageYOffset || document.documentElement.scrollTop;
   const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const scrollPercent = (st / scrollHeight) * 100;
+  
+  if (scrollHeight > 0) {
+    const scrollPercent = (st / scrollHeight) * 100;
+    scrollProgress.style.width = scrollPercent + "%";
 
-  scrollProgress.style.width = scrollPercent + "%";
+    // Binary scroll counter - only update on desktop
+    if (!isMobile()) {
+      const binaryValue = Math.floor(scrollPercent).toString(2).padStart(8, '0');
+      document.documentElement.style.setProperty('--scroll-binary', `"${binaryValue}"`);
+    }
+  }
+}, 16); // ~60fps throttle
 
-  // Binary scroll counter
-  const binaryValue = Math.floor(scrollPercent).toString(2).padStart(8, '0');
-  document.documentElement.style.setProperty('--scroll-binary', `"${binaryValue}"`);
-
-  lastScrollTop = st;
-});
+if (!isMobile()) {
+  window.addEventListener("scroll", updateScrollProgress, { passive: true });
+}
 
 /* =====================
    PARALLAX BACKGROUND GLOW
 ===================== */
 const glow = document.querySelector(".bg-glow");
 
-if (glow) {
-  window.addEventListener("mousemove", e => {
+// Only enable parallax on desktop for better mobile performance
+if (glow && !isMobile()) {
+  const updateGlow = throttle(e => {
     // disable parallax when modal open
     if (document.body.style.overflow === "hidden") return;
 
@@ -74,7 +106,9 @@ if (glow) {
     const y = (e.clientY / window.innerHeight - 0.5) * 60;
 
     glow.style.transform = `translate(${x}px, ${y}px)`;
-  });
+  }, 16);
+
+  document.addEventListener("mousemove", updateGlow);
 }
 
 /* =====================
@@ -82,28 +116,31 @@ if (glow) {
 ===================== */
 document.querySelectorAll(".project-card").forEach(card => {
 
-  card.addEventListener("mousemove", e => {
-    // stop effect when modal open
-    if (document.body.style.overflow === "hidden") return;
+  // Only add 3D hover effect on desktop
+  if (!isMobile()) {
+    card.addEventListener("mousemove", e => {
+      // stop effect when modal open
+      if (document.body.style.overflow === "hidden") return;
 
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-    const rotateY = ((x / rect.width) - 0.5) * 10;
-    const rotateX = ((y / rect.height) - 0.5) * -10;
+      const rotateY = ((x / rect.width) - 0.5) * 10;
+      const rotateX = ((y / rect.height) - 0.5) * -10;
 
-    card.style.transform = `
-      perspective(1000px)
-      rotateX(${rotateX}deg)
-      rotateY(${rotateY}deg)
-      translateY(-8px)
-    `;
-  });
+      card.style.transform = `
+        perspective(1000px)
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+        translateY(-8px)
+      `;
+    });
 
-  card.addEventListener("mouseleave", () => {
-    card.style.transform = "";
-  });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "";
+    });
+  }
 
   /* =====================
      OPEN MODAL (RESET CARD)
