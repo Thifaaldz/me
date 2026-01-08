@@ -115,7 +115,7 @@ document.querySelectorAll(".project-card").forEach(card => {
 });
 
 /* =====================
-   MODAL HANDLER
+   MODAL HANDLER (PROJECTS)
 ===================== */
 document.querySelectorAll(".project-card").forEach(card => {
   card.addEventListener("click", () => {
@@ -125,6 +125,27 @@ document.querySelectorAll(".project-card").forEach(card => {
     if (modal) {
       modal.classList.add("active");
       document.body.style.overflow = "hidden";
+    }
+  });
+});
+
+/* =====================
+   MODAL HANDLER (EXPERIENCE / TIMELINE WITH MODALS)
+===================== */
+document.querySelectorAll(".timeline-item[data-modal]").forEach(item => {
+  item.addEventListener("click", (e) => {
+    // Don't open modal if clicking on expandable content
+    if (e.target.closest(".exp-content")) return;
+    
+    const modalId = item.getAttribute("data-modal");
+    
+    if (modalId) {
+      const modal = document.getElementById(modalId);
+      
+      if (modal) {
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
     }
   });
 });

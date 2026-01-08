@@ -138,6 +138,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  justify-content: center;
 }
 
 /* Code bracket decoration for section headers */
@@ -202,6 +203,28 @@ body {
   box-shadow: 0 0 30px rgba(0,0,0,0.4);
 }
 
+.timeline-item h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+}
+
+.timeline-item > span {
+  color: var(--accent);
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.timeline-item p {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.timeline-item p:last-child {
+  margin-bottom: 0;
+}
+
 /* =====================
    SKILLS
 ===================== */
@@ -223,6 +246,162 @@ body {
 .skill-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* =====================
+   PROGRAMMING LANGUAGES (Deprecated - Use Tech Stack)
+===================== */
+.lang-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+  gap: 20px;
+}
+
+.lang-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  transition: 0.35s ease;
+}
+
+.lang-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 25px var(--accent-glow);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.lang-card img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.lang-card:hover img {
+  transform: scale(1.15);
+}
+
+.lang-card span {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+/* =====================
+   TECH STACK (Minimal Badge Design)
+===================== */
+.tech-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.tech-category {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.tech-category-title {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.8;
+  margin: 0;
+  text-align: center;
+}
+
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.tech-badge {
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-main);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.tech-badge:hover {
+  transform: translateY(-3px);
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 6px 20px var(--accent-glow);
+  color: var(--accent);
+}
+
+/* =====================
+   TECH BADGE ICON (Icon + Label)
+===================== */
+.tech-badge-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-main);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.tech-badge-icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: brightness(1.1);
+}
+
+.tech-badge-icon:hover {
+  transform: translateY(-4px);
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 8px 25px var(--accent-glow);
+}
+
+.tech-badge-icon:hover img {
+  transform: scale(1.1);
+  filter: brightness(1.3) drop-shadow(0 0 8px var(--accent-glow));
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .tech-stack {
+    gap: 24px;
+  }
+  
+  .tech-category {
+    gap: 12px;
+  }
+  
+  .tech-badges {
+    gap: 8px;
+  }
+  
+  .tech-badge {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
 }
 
 /* =====================
@@ -274,22 +453,38 @@ body {
 ===================== */
 .cert-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
   gap: 18px;
 }
 
 .cert-card {
-  padding: 18px;
   background: var(--bg-card);
   border-radius: 14px;
   border: 1px solid var(--border-soft);
   text-align: center;
   transition: 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.cert-card img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 14px 14px 0 0;
+}
+
+.cert-card span {
+  display: block;
+  padding: 14px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 .cert-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px var(--accent-glow);
+  transform: translateY(-6px);
+  box-shadow: 0 0 25px var(--accent-glow);
+  border-color: rgba(56, 189, 248, 0.4);
 }
 
 /* =====================
@@ -467,8 +662,125 @@ body {
 }
 
 /* =====================
-   MODAL (PROJECT / JOURNAL)
+   MODAL (EXPERIENCE - SPLIT LAYOUT)
 ===================== */
+.modal-experience {
+  display: flex !important;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.modal-experience .exp-photo {
+  flex-shrink: 0;
+  width: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+}
+
+.modal-experience .exp-photo img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-experience .exp-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-experience .exp-content h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.8rem;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.modal-experience .exp-period {
+  display: inline-block;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.modal-experience .exp-content p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.modal-experience .modal-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-experience .modal-tech span {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 999px;
+  color: var(--accent);
+}
+
+.modal-experience .exp-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-experience .exp-gallery img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.modal-experience .exp-gallery img:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+}
+
+/* Mobile - Stack vertically */
+@media (max-width: 768px) {
+  .modal-experience {
+    flex-direction: column !important;
+  }
+  
+  .modal-experience .exp-photo {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+  
+  .modal-experience .exp-photo img {
+    height: 200px;
+  }
+  
+  .modal-experience .exp-gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .modal-experience .exp-gallery img {
+    height: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-experience .exp-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 .modal-overlay {
   position: fixed;
   inset: 0;
