@@ -66,28 +66,27 @@ if (cursor) {
 /* =====================
    SCROLL PROGRESS BAR (Code Style)
 ===================== */
-const scrollProgress = document.createElement("div");
-scrollProgress.className = "scroll-progress";
-document.body.appendChild(scrollProgress);
+// Only create scroll progress on desktop
+if (!isMobile()) {
+  const scrollProgress = document.createElement("div");
+  scrollProgress.className = "scroll-progress";
+  document.body.appendChild(scrollProgress);
 
-// Use throttled scroll handler for better performance
-const updateScrollProgress = throttle(() => {
-  const st = window.pageYOffset || document.documentElement.scrollTop;
-  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-  
-  if (scrollHeight > 0) {
-    const scrollPercent = (st / scrollHeight) * 100;
-    scrollProgress.style.width = scrollPercent + "%";
+  // Use throttled scroll handler for better performance
+  const updateScrollProgress = throttle(() => {
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    
+    if (scrollHeight > 0) {
+      const scrollPercent = (st / scrollHeight) * 100;
+      scrollProgress.style.width = scrollPercent + "%";
 
-    // Binary scroll counter - only update on desktop
-    if (!isMobile()) {
+      // Binary scroll counter
       const binaryValue = Math.floor(scrollPercent).toString(2).padStart(8, '0');
       document.documentElement.style.setProperty('--scroll-binary', `"${binaryValue}"`);
     }
-  }
-}, 16); // ~60fps throttle
+  }, 16); // ~60fps throttle
 
-if (!isMobile()) {
   window.addEventListener("scroll", updateScrollProgress, { passive: true });
 }
 

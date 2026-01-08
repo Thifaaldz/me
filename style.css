@@ -66,6 +66,8 @@ body {
   background-size: 60px 60px;
   mask-image: radial-gradient(circle at center, black 30%, transparent 75%);
   z-index: -2;
+  /* GPU acceleration */
+  will-change: transform;
 }
 
 .bg-glow {
@@ -79,6 +81,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: -3;
+  will-change: transform;
 }
 
 /* =====================
@@ -1496,7 +1499,11 @@ body {
    MOBILE PERFORMANCE OPTIMIZATIONS
 ===================== */
 @media (max-width: 768px) {
-  /* Disable expensive binary rain on mobile */
+  /* Disable expensive background effects on mobile */
+  .bg-grid {
+    display: none;
+  }
+
   .binary-rain {
     display: none;
   }
@@ -1506,26 +1513,37 @@ body {
     display: none;
   }
 
-  /* Simplify glow effect */
+  /* Remove glow effect completely on mobile */
   .bg-glow {
-    opacity: 0.06;
-    filter: blur(120px);
+    display: none;
   }
 
-  /* Reduce backdrop-filter blur on mobile */
+  /* Disable scroll progress bar on mobile */
+  .scroll-progress {
+    display: none;
+  }
+
+  /* Disable scroll binary indicator */
+  .scroll-progress::after {
+    display: none;
+  }
+
+  /* Reduce backdrop-filter blur on mobile - disable it */
   .modal-overlay {
-    backdrop-filter: blur(4px);
+    backdrop-filter: none;
+    background: rgba(2, 6, 23, 0.95);
+  }
+
+  /* Also disable on lightbox */
+  .lightbox {
+    backdrop-filter: none;
+    background: rgba(2, 6, 23, 0.98);
   }
 
   /* Disable 3D transforms on project cards */
   .project-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
-  }
-
-  /* Simplify scroll progress */
-  .scroll-progress {
-    height: 2px;
   }
 
   /* Disable scanline effect */
@@ -1535,8 +1553,13 @@ body {
 
   /* Simplify animations */
   .code-window-bg {
-    animation: fadeInUp 0.6s ease forwards, none;
+    animation: fadeInUp 0.6s ease forwards;
     float: none !important;
+  }
+
+  /* Disable all animations on hero content */
+  .hero-content {
+    animation: none;
   }
 
   /* Reduce glow intensity */
@@ -1582,6 +1605,13 @@ body {
     animation: none;
   }
 
+  /* Disable reveal animations on mobile for performance */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
   /* Mobile - Stack vertically for profile section */
   .profile-split {
     flex-direction: column;
@@ -1602,19 +1632,41 @@ body {
   .profile-info .hero-role,
   .profile-info .hero-desc,
   .profile-info .hero-actions {
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0;
+    opacity: 1;
+    animation: none;
   }
-
-  .profile-info .hero-title { animation-delay: 0.1s; }
-  .profile-info .hero-role { animation-delay: 0.2s; }
-  .profile-info .hero-desc { animation-delay: 0.3s; }
-  .profile-info .hero-actions { animation-delay: 0.4s; }
 
   .code-window-bg {
     width: 100%;
     max-width: 340px;
     height: 220px;
     order: 1;
+    opacity: 1;
+  }
+
+  /* Reduce section padding on mobile */
+  .section {
+    padding: 60px 20px;
+  }
+
+  /* Simplify cert card hover */
+  .cert-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Disable lang card hover effects */
+  .lang-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .lang-card:hover img {
+    transform: none;
+  }
+
+  /* Simplify project card hover */
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
   }
 }
