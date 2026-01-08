@@ -353,8 +353,8 @@ body {
 .tech-badge-icon {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
+  gap: 8px;
+  padding: 8px 12px;
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
   border-radius: 10px;
@@ -366,8 +366,8 @@ body {
 }
 
 .tech-badge-icon img {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
   filter: brightness(1.1);
 }
