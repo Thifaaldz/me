@@ -69,14 +69,6 @@ body {
   animation: fadeUp 1.2s ease forwards;
 }
 
-.profile-img {
-  width: 150px;
-  border-radius: 50%;
-  margin-bottom: 30px;
-  box-shadow: 0 0 40px var(--accent-glow);
-  animation: float 6s ease-in-out infinite;
-}
-
 .hero-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(2.2rem, 5vw, 3.2rem);
@@ -481,4 +473,81 @@ body {
   .modal-img {
     height: 200px;
   }
+}
+
+.cyber-glass-cube {
+  position: relative;
+  width: 190px;
+  height: 240px;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(56,189,248,.25),
+      rgba(255,255,255,.04)
+    );
+  backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 0 30px rgba(255,255,255,.12),
+    0 40px 90px rgba(0,0,0,.8),
+    0 0 60px rgba(56,189,248,.35);
+  transform-style: preserve-3d;
+}
+
+.cyber-glass-cube::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 14px;
+  border: 1px solid rgba(56,189,248,.45);
+  transform: translateZ(20px);
+}
+
+.cyber-glass-cube img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  transform: translateZ(40px);
+}
+
+.profile-cyber-3d {
+  position: relative;
+  width: 190px;
+  height: 240px;
+  margin: 0 auto 34px;
+  border-radius: 18px;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.7),
+    0 0 60px rgba(56,189,248,.45);
+}
+
+.profile-cyber-3d img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid rgba(56,189,248,.4);
+  background: #020617;
+  transform: translateZ(20px);
+}
+
+.profile-cyber-3d .cyber-layer {
+  position: absolute;
+  inset: -14px;
+  background:
+    linear-gradient(rgba(56,189,248,.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,.15) 1px, transparent 1px),
+    linear-gradient(
+      120deg,
+      rgba(56,189,248,.35),
+      rgba(96,165,250,.15),
+      transparent
+    );
+  background-size: 22px 22px, 22px 22px, 100% 100%;
+  filter: blur(6px);
+  transform: translateZ(-40px);
+  border-radius: 22px;
 }

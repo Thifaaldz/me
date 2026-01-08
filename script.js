@@ -111,3 +111,24 @@ function closeModal(modal) {
   modal.classList.remove("active");
   document.body.style.overflow = "";
 }
+
+
+const profileCard = document.querySelector(".profile-cyber-3d");
+
+if (profileCard) {
+  profileCard.addEventListener("mousemove", e => {
+    const rect = profileCard.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const rotateY = ((x / rect.width) - 0.5) * 12;
+    const rotateX = ((y / rect.height) - 0.5) * -12;
+
+    profileCard.style.transform =
+      `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+
+  profileCard.addEventListener("mouseleave", () => {
+    profileCard.style.transform = "perspective(1000px)";
+  });
+}
