@@ -520,6 +520,18 @@ body {
   justify-content: center;
   gap: 60px;
   text-align: left;
+  animation: fadeInUp 1s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .profile-info {
@@ -530,18 +542,48 @@ body {
 .profile-info .hero-title {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   margin-bottom: 12px;
+  animation: slideInLeft 0.8s ease 0.2s forwards;
+  opacity: 0;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .profile-info .hero-role {
   margin: 12px 0;
+  animation: slideInLeft 0.8s ease 0.4s forwards;
+  opacity: 0;
 }
 
 .profile-info .hero-desc {
   margin: 16px 0 24px;
+  animation: slideInLeft 0.8s ease 0.6s forwards;
+  opacity: 0;
 }
 
 .profile-info .hero-actions {
   justify-content: flex-start;
+  animation: slideInLeft 0.8s ease 0.8s forwards;
+  opacity: 0;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .code-window-bg {
@@ -555,6 +597,28 @@ body {
     0 0 40px rgba(56,189,248,.25);
   border: 1px solid rgba(56,189,248,.3);
   flex-shrink: 0;
+  animation: slideInRight 0.8s ease 0.3s forwards, float 4s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .profile-bg-image {
@@ -564,6 +628,16 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  animation: imagePulse 3s ease-in-out infinite;
+}
+
+@keyframes imagePulse {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.1);
+  }
 }
 
 .code-overlay {
@@ -575,6 +649,32 @@ body {
   flex-direction: column;
 }
 
+/* Scanline effect */
+.code-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes scanline {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}
+
 .code-header {
   background: linear-gradient(180deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.9));
   padding: 12px 16px;
@@ -582,23 +682,127 @@ body {
   align-items: center;
   gap: 10px;
   border-bottom: 1px solid rgba(56,189,248,.15);
+  position: relative;
+  z-index: 3;
 }
 
+/* Animated dots with glow */
 .dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
+  position: relative;
 }
 
-.dot.red { background: #ff5f56; box-shadow: 0 0 10px rgba(255,95,86,.5); }
-.dot.yellow { background: #ffbd2e; box-shadow: 0 0 10px rgba(255,189,46,.5); }
-.dot.green { background: #27c93f; box-shadow: 0 0 10px rgba(39,201,63,.5); }
+.dot.red {
+  background: #ff5f56;
+  box-shadow: 0 0 10px rgba(255,95,86,.5);
+  animation: pulseRed 2s ease-in-out infinite;
+}
 
+.dot.yellow {
+  background: #ffbd2e;
+  box-shadow: 0 0 10px rgba(255,189,46,.5);
+  animation: pulseYellow 2s ease-in-out infinite 0.3s;
+}
+
+.dot.green {
+  background: #27c93f;
+  box-shadow: 0 0 10px rgba(39,201,63,.5);
+  animation: pulseGreen 2s ease-in-out infinite 0.6s;
+}
+
+@keyframes pulseRed {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255,95,86,.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255,95,86,.8), 0 0 30px rgba(255,95,86,.4);
+  }
+}
+
+@keyframes pulseYellow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255,189,46,.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255,189,46,.8), 0 0 30px rgba(255,189,46,.4);
+  }
+}
+
+@keyframes pulseGreen {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(39,201,63,.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(39,201,63,.8), 0 0 30px rgba(39,201,63,.4);
+  }
+}
+
+/* Typing animation for filename */
 .file-name {
   margin-left: auto;
   font-family: 'Fira Code', monospace;
   font-size: 12px;
   color: var(--text-muted);
+  position: relative;
+  overflow: hidden;
+  border-right: 2px solid var(--accent);
+  animation: typing 3s steps(10, end) infinite, blink 0.7s step-end infinite;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+@keyframes typing {
+  from {
+    max-width: 0;
+  }
+  50% {
+    max-width: 120px;
+  }
+  100% {
+    max-width: 120px;
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    border-color: var(--accent);
+  }
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* Glow border animation */
+.code-window-bg::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(56,189,248,.5),
+    transparent,
+    rgba(56,189,248,.3),
+    transparent
+  );
+  z-index: -1;
+  animation: borderGlow 3s linear infinite;
+  background-size: 300% 300%;
+}
+
+@keyframes borderGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Mobile - Stack vertically */
@@ -618,10 +822,25 @@ body {
     justify-content: center;
   }
 
+  .profile-info .hero-title,
+  .profile-info .hero-role,
+  .profile-info .hero-desc,
+  .profile-info .hero-actions {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  .profile-info .hero-title { animation-delay: 0.1s; }
+  .profile-info .hero-role { animation-delay: 0.2s; }
+  .profile-info .hero-desc { animation-delay: 0.3s; }
+  .profile-info .hero-actions { animation-delay: 0.4s; }
+
   .code-window-bg {
     width: 100%;
     max-width: 340px;
     height: 220px;
     order: 1;
+    animation: slideInRight 0.8s ease 0.2s forwards, float 4s ease-in-out infinite 0.2s;
+    opacity: 0;
   }
 }
