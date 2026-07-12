@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Digital Snake and Ladder TB Education Journal Cover</title>
+  <desc id="desc">A portfolio cover for a gamified digital snake and ladder tuberculosis education journal article.</desc>
+  <rect width="1200" height="720" fill="#0b0d12"/>
+  <rect x="72" y="72" width="1056" height="576" rx="24" fill="#111827" stroke="#38bdf8" stroke-opacity="0.45" stroke-width="4"/>
+  <g opacity="0.12" stroke="#38bdf8" stroke-width="2">
+    <path d="M172 168h856M172 272h856M172 376h856M172 480h856M172 584h856"/>
+    <path d="M172 168v416M315 168v416M458 168v416M601 168v416M744 168v416M887 168v416M1028 168v416"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M330 536c70-118 118-186 204-284" stroke="#22c55e" stroke-width="24"/>
+    <path d="M360 520l42-10M424 426l44-10M492 334l48-8" stroke="#d1fae5" stroke-width="10"/>
+    <path d="M772 190c-72 56-14 122-86 182s-16 119-88 169" stroke="#f97316" stroke-width="22"/>
+    <path d="M770 190l46 7-21 40z" fill="#f97316" stroke="#fed7aa" stroke-width="5"/>
+    <circle cx="806" cy="198" r="5" fill="#0b0d12"/>
+  </g>
+  <g>
+    <circle cx="268" cy="262" r="44" fill="#38bdf8" opacity="0.95"/>
+    <path d="M250 262h36M268 244v36" stroke="#0b0d12" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="932" cy="488" r="48" fill="#e5e7eb"/>
+    <path d="M908 488h48M932 464v48" stroke="#0b0d12" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <text x="128" y="128" fill="#38bdf8" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">IJSET Journal</text>
+  <text x="128" y="620" fill="#e5e7eb" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="700">Digital Snake &amp; Ladder</text>
+  <text x="128" y="668" fill="#9ca3af" font-family="Inter, Arial, sans-serif" font-size="28">Life Score for Adolescent TB Education</text>
+</svg>

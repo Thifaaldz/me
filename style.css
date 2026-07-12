@@ -459,6 +459,12 @@ body {
   object-fit: cover;
 }
 
+.project-card-logo img {
+  object-fit: contain;
+  padding: 22px;
+  background: rgba(255,255,255,0.04);
+}
+
 .project-card h3 {
   margin: 16px;
 }
@@ -865,6 +871,12 @@ body {
   border-radius: 14px;
   margin-bottom: 24px;
   box-shadow: 0 0 30px rgba(0,0,0,.4);
+}
+
+.modal-logo-img {
+  object-fit: contain;
+  padding: 28px;
+  background: rgba(255,255,255,0.04);
 }
 
 .modal h3 {
