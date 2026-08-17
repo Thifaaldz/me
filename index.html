@@ -10,12 +10,95 @@
   <meta name="author" content="Muhammad Thifaal Dzaki">
 
   <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;500;700&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
 
   <!-- Styles -->
+  <link rel="preload" href="assets/profile.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .site-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 28% 24%, rgba(34, 230, 255, 0.16), transparent 28%),
+        radial-gradient(circle at 74% 66%, rgba(255, 95, 143, 0.12), transparent 32%),
+        #07090f;
+      color: #f5f7fb;
+      font-family: "Fira Code", monospace;
+      transition: opacity 0.34s ease, visibility 0.34s ease;
+    }
+
+    .site-loader__panel {
+      width: min(320px, calc(100vw - 44px));
+      text-align: center;
+    }
+
+    .site-loader__blocks {
+      display: grid;
+      grid-template-columns: repeat(4, 26px);
+      grid-auto-rows: 26px;
+      justify-content: center;
+      gap: 7px;
+      margin-bottom: 20px;
+      transform: perspective(520px) rotateX(16deg) rotateZ(-4deg);
+    }
+
+    .site-loader__blocks span {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: #22e6ff;
+      box-shadow: 0 0 24px rgba(34, 230, 255, 0.28);
+      animation: loaderPulse 1.05s ease-in-out infinite;
+    }
+
+    .site-loader__blocks span:nth-child(2) { background: #ffb648; animation-delay: 0.08s; }
+    .site-loader__blocks span:nth-child(3) { background: #ff5f8f; animation-delay: 0.16s; }
+    .site-loader__blocks span:nth-child(4) { background: #9dff7a; animation-delay: 0.24s; }
+    .site-loader__blocks span:nth-child(5) { background: #8f7cff; animation-delay: 0.32s; }
+    .site-loader__blocks span:nth-child(6) { background: #22e6ff; animation-delay: 0.4s; }
+
+    .site-loader__text {
+      display: block;
+      color: #a8b3c7;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    body.is-ready .site-loader,
+    body.app-force-ready .site-loader {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes loaderPulse {
+      0%, 100% { transform: translateY(0) scale(1); filter: brightness(0.9); }
+      50% { transform: translateY(-9px) scale(1.08); filter: brightness(1.2); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .site-loader__blocks span {
+        animation: none;
+      }
+    }
+  </style>
+  <noscript><style>.site-loader{display:none}</style></noscript>
 </head>
-<body>
+<body class="is-loading">
+<div class="site-loader" id="site-loader" role="status" aria-live="polite" aria-label="Loading portfolio">
+  <div class="site-loader__panel">
+    <div class="site-loader__blocks" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <span class="site-loader__text">Loading Portfolio</span>
+  </div>
+</div>
 
 <!-- ===================== -->
 <!-- BACKGROUND EFFECTS -->
@@ -24,6 +107,7 @@
 <div class="bg-glow"></div>
 <div class="binary-rain"></div>
 <div class="cursor-code"></div>
+<canvas class="web3-scene" id="web3-scene" aria-hidden="true"></canvas>
 
 <!-- ===================== -->
 <!-- HERO SECTION -->
@@ -45,11 +129,11 @@
         </p>
         <div class="hero-actions">
           <a href="#projects" class="btn primary">View Projects</a>
-          <a href="assets/CV_Muhammad_Thifaal_Dzaki.pdf" class="btn ghost" target="_blank">Download CV</a>
+          <a href="assets/CV - Muhamad Thifaal.pdf" class="btn ghost" target="_blank">Download CV</a>
         </div>
       </div>
       <div class="code-window-bg">
-        <img src="assets/profile.jpg" alt="Muhammad Thifaal Dzaki" class="profile-bg-image">
+        <img src="assets/profile.jpg" alt="Muhammad Thifaal Dzaki" class="profile-bg-image" width="1200" height="1600" loading="eager" decoding="async" fetchpriority="high">
         <div class="code-overlay">
           <div class="code-header">
             <span class="dot red"></span>
@@ -150,23 +234,23 @@
         <h3 class="tech-category-title">Languages</h3>
         <div class="tech-badges">
           <span class="tech-badge-icon">
-            <img src="icons/python.svg" alt="Python">
+            <img data-src="icons/python.svg" alt="Python" loading="lazy" decoding="async">
             <span>Python</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/php.svg" alt="PHP">
+            <img data-src="icons/php.svg" alt="PHP" loading="lazy" decoding="async">
             <span>PHP</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/js.svg" alt="JavaScript">
+            <img data-src="icons/js.svg" alt="JavaScript" loading="lazy" decoding="async">
             <span>JavaScript</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/dart.svg" alt="Dart">
+            <img data-src="icons/dart.svg" alt="Dart" loading="lazy" decoding="async">
             <span>Dart</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/mysql.svg" alt="SQL">
+            <img data-src="icons/mysql.svg" alt="SQL" loading="lazy" decoding="async">
             <span>SQL</span>
           </span>
         </div>
@@ -177,23 +261,23 @@
         <h3 class="tech-category-title">Frameworks</h3>
         <div class="tech-badges">
           <span class="tech-badge-icon">
-            <img src="icons/laravel.svg" alt="Laravel">
+            <img data-src="icons/laravel.svg" alt="Laravel" loading="lazy" decoding="async">
             <span>Laravel</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/filament.svg" alt="Filament">
+            <img data-src="icons/filament.svg" alt="Filament" loading="lazy" decoding="async">
             <span>Filament</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/laravel.svg" alt="Livewire">
+            <img data-src="icons/laravel.svg" alt="Livewire" loading="lazy" decoding="async">
             <span>Livewire</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/fastapi.svg" alt="FastAPI">
+            <img data-src="icons/fastapi.svg" alt="FastAPI" loading="lazy" decoding="async">
             <span>FastAPI</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/flutter.svg" alt="Flutter">
+            <img data-src="icons/flutter.svg" alt="Flutter" loading="lazy" decoding="async">
             <span>Flutter</span>
           </span>
         </div>
@@ -204,27 +288,27 @@
         <h3 class="tech-category-title">Systems</h3>
         <div class="tech-badges">
           <span class="tech-badge-icon">
-            <img src="icons/erpnext.svg" alt="ERPNext">
+            <img data-src="icons/erpnext.svg" alt="ERPNext" loading="lazy" decoding="async">
             <span>ERPNext</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/pentaho.svg" alt="Pentaho">
+            <img data-src="icons/pentaho.svg" alt="Pentaho" loading="lazy" decoding="async">
             <span>Pentaho</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/docker.svg" alt="Docker">
+            <img data-src="icons/docker.svg" alt="Docker" loading="lazy" decoding="async">
             <span>Docker</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/ubuntu.svg" alt="Ubuntu">
+            <img data-src="icons/ubuntu.svg" alt="Ubuntu" loading="lazy" decoding="async">
             <span>Ubuntu</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/mariadb.svg" alt="MariaDB">
+            <img data-src="icons/mariadb.svg" alt="MariaDB" loading="lazy" decoding="async">
             <span>MariaDB</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/redis.svg" alt="Redis">
+            <img data-src="icons/redis.svg" alt="Redis" loading="lazy" decoding="async">
             <span>Redis</span>
           </span>
         </div>
@@ -235,23 +319,23 @@
         <h3 class="tech-category-title">Tools</h3>
         <div class="tech-badges">
           <span class="tech-badge-icon">
-            <img src="icons/n8n-color.svg" alt="N8N">
+            <img data-src="icons/n8n-color.svg" alt="N8N" loading="lazy" decoding="async">
             <span>n8n</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/tesseract-icon.svg" alt="OCR">
+            <img data-src="icons/tesseract-icon.svg" alt="OCR" loading="lazy" decoding="async">
             <span>Tesseract OCR</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/qgis.svg" alt="GIS">
+            <img data-src="icons/qgis.svg" alt="GIS" loading="lazy" decoding="async">
             <span>GIS</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/github.svg" alt="Git">
+            <img data-src="icons/github.svg" alt="Git" loading="lazy" decoding="async">
             <span>Git</span>
           </span>
           <span class="tech-badge-icon">
-            <img src="icons/midtrans.svg" alt="Midtrans">
+            <img data-src="icons/midtrans.svg" alt="Midtrans" loading="lazy" decoding="async">
             <span>Midtrans</span>
           </span>
         </div>
@@ -269,7 +353,7 @@
 
     <!-- Project -->
     <div class="project-card" data-modal="modal-esggul">
-      <img src="assets/projects/esggul/cover.png" loading="lazy" alt="Esggul Code Project">
+      <img data-src="assets/projects/esggul/cover.png" loading="lazy" alt="Esggul Code Project" decoding="async">
       <h3>Esggul Code – Bootcamp & HRM System</h3>
       <p>
         Web-based bootcamp management system featuring HRM, LMS, salary
@@ -279,7 +363,7 @@
     </div>
 
     <div class="project-card" data-modal="modal-akadify">
-      <img src="assets/projects/akadify/cover.png" loading="lazy" alt="Akadify Project">
+      <img data-src="assets/projects/akadify/cover.png" loading="lazy" alt="Akadify Project" decoding="async">
       <h3>Akadify – Certificate OCR Automation</h3>
       <p>
         Automated certificate upload and verification using OCR, n8n workflow,
@@ -289,7 +373,7 @@
     </div>
 
     <div class="project-card" data-modal="modal-simardik">
-      <img src="assets/projects/simardik/cover.png" loading="lazy" alt="Simardik Project">
+      <img data-src="assets/projects/simardik/cover.png" loading="lazy" alt="Simardik Project" decoding="async">
       <h3>Simardik – Digital Archive Management</h3>
       <p>
         Secure digital archive system with file deduplication, role-based access,
@@ -299,7 +383,7 @@
     </div>
 
     <div class="project-card project-card-logo" data-modal="modal-abilitylearn">
-      <img src="assets/projects/abilitylearn/logo.png" loading="lazy" alt="Ability Learn App Logo">
+      <img data-src="assets/projects/abilitylearn/logo.png" loading="lazy" alt="Ability Learn App Logo" decoding="async">
       <h3>Ability Learn – Adaptive Educational Game</h3>
       <p>
         Offline Flutter-based educational game for children with special needs,
@@ -309,7 +393,7 @@
     </div>
 
     <div class="project-card" data-modal="modal-erpnext">
-      <img src="assets/projects/erpnext/cover.png" loading="lazy" alt="ERPNext Project">
+      <img data-src="assets/projects/erpnext/cover.png" loading="lazy" alt="ERPNext Project" decoding="async">
       <h3>ERPNext Implementation & Integration</h3>
       <p>
         ERPNext CRM, Sales & Marketing configuration with Redis-based system
@@ -319,7 +403,7 @@
     </div>
 
     <div class="project-card" data-modal="modal-etl">
-      <img src="assets/projects/laundry-etl/cover.png" loading="lazy" alt="ETL Laundry Project">
+      <img data-src="assets/projects/laundry-etl/cover.png" loading="lazy" alt="ETL Laundry Project" decoding="async">
       <h3>ETL Laundry Business</h3>
       <p>
         Designed ETL workflows using Pentaho for operational analytics and data
@@ -329,7 +413,7 @@
     </div>
 
     <div class="project-card" data-modal="modal-momcare">
-      <img src="assets/projects/momcare/cover.png" loading="lazy" alt="MomCare Project">
+      <img data-src="assets/projects/momcare/cover.png" loading="lazy" alt="MomCare Project" decoding="async">
       <h3>MomCare – Mobile Pregnancy App</h3>
       <p>
         Mobile app for pregnancy monitoring with GIS-based midwife locator and
@@ -339,7 +423,7 @@
     </div>
 
     <div class="project-card" data-modal="modal-distribusi">
-      <img src="assets/projects/distribusi-pertanian/cover.png" loading="lazy" alt="Distribusi Pertanian Project">
+      <img data-src="assets/projects/distribusi-pertanian/cover.png" loading="lazy" alt="Distribusi Pertanian Project" decoding="async">
       <h3>Distribusi Pertanian – Agricultural Distribution</h3>
       <p>
         Web-based platform for agricultural product distribution featuring seed
@@ -360,7 +444,7 @@
 <div class="modal-overlay" id="modal-esggul">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/esggul/cover.png" class="modal-img">
+    <img data-src="assets/projects/esggul/cover.png" class="modal-img" loading="lazy" decoding="async">
     <h3>Esggul Code – Bootcamp & HRM System</h3>
     <p>
       A comprehensive digital platform for managing bootcamp operations and
@@ -371,9 +455,9 @@
       <span>Laravel</span><span>Filament</span><span>Livewire</span><span>Midtrans</span>
     </div>
     <div class="modal-gallery">
-      <img src="assets/projects/esggul/1.png">
-      <img src="assets/projects/esggul/2.png">
-      <img src="assets/projects/esggul/3.png">
+      <img data-src="assets/projects/esggul/1.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/esggul/2.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/esggul/3.png" loading="lazy" decoding="async">
     </div>
     <a href="https://github.com/Thifaaldz/esggulcode-2025" target="_blank" class="btn primary">
       GitHub Repository
@@ -385,7 +469,7 @@
 <div class="modal-overlay" id="modal-akadify">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/akadify/cover.png" class="modal-img">
+    <img data-src="assets/projects/akadify/cover.png" class="modal-img" loading="lazy" decoding="async">
     <h3>Akadify – Certificate OCR Automation</h3>
     <p>
       Automated certificate verification system using OCR technology integrated
@@ -395,9 +479,9 @@
       <span>Python</span><span>Tesseract OCR</span><span>n8n</span><span>Docker</span>
     </div>
     <div class="modal-gallery">
-      <img src="assets/projects/akadify/1.png">
-      <img src="assets/projects/akadify/2.png">
-      <img src="assets/projects/akadify/3.png">
+      <img data-src="assets/projects/akadify/1.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/akadify/2.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/akadify/3.png" loading="lazy" decoding="async">
     </div>
     <a href="https://github.com/Thifaaldz/akadify-2025" target="_blank" class="btn primary">
       GitHub Repository
@@ -409,7 +493,7 @@
 <div class="modal-overlay" id="modal-simardik">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/simardik/cover.png" class="modal-img">
+    <img data-src="assets/projects/simardik/cover.png" class="modal-img" loading="lazy" decoding="async">
     <h3>Simardik – Digital Archive Management</h3>
     <p>
       Digital archive management system with role-based access control,
@@ -419,9 +503,9 @@
       <span>Laravel</span><span>Filament</span><span>MariaDB</span><span>Docker</span>
     </div>
     <div class="modal-gallery">
-      <img src="assets/projects/simardik/1.png">
-      <img src="assets/projects/simardik/2.png">
-      <img src="assets/projects/simardik/3.png">
+      <img data-src="assets/projects/simardik/1.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/simardik/2.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/simardik/3.png" loading="lazy" decoding="async">
     </div>
     <a href="https://github.com/Thifaaldz/simardik-2026" target="_blank" class="btn primary">
       GitHub Repository
@@ -433,7 +517,7 @@
 <div class="modal-overlay" id="modal-abilitylearn">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/abilitylearn/logo.png" class="modal-img modal-logo-img" alt="Ability Learn App Logo">
+    <img data-src="assets/projects/abilitylearn/logo.png" class="modal-img modal-logo-img" alt="Ability Learn App Logo" loading="lazy" decoding="async">
     <h3>Ability Learn – Adaptive Educational Game</h3>
     <p>
       Mobile educational game built with Flutter for children with special needs.
@@ -460,7 +544,7 @@
 <div class="modal-overlay" id="modal-abilitylearn-journal">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/abilitylearn/logo.png" class="modal-img modal-logo-img" alt="Ability Learn Journal Publication">
+    <img data-src="assets/projects/abilitylearn/logo.png" class="modal-img modal-logo-img" alt="Ability Learn Journal Publication" loading="lazy" decoding="async">
     <h3>Implementasi Game Edukasi Adaptif untuk Anak Berkebutuhan Khusus</h3>
     <p>
       Published article in Abdimas Universal Vol. 8 No. 1 (2026), pages 247-253,
@@ -480,7 +564,7 @@
         <span>Journal PDF</span>
         <a href="assets/projects/abilitylearn-journal/jurnal.pdf" target="_blank" class="pdf-external-link">Open in New Tab ↗</a>
       </div>
-      <embed src="assets/projects/abilitylearn-journal/jurnal.pdf" type="application/pdf" class="pdf-content">
+      <embed data-src="assets/projects/abilitylearn-journal/jurnal.pdf" type="application/pdf" class="pdf-content">
     </div>
     <div class="modal-actions">
       <a href="https://abdimasuniversal.uniba-bpn.ac.id/index.php/abdimasuniversal/article/view/2841" target="_blank" class="btn primary">
@@ -500,7 +584,7 @@
 <div class="modal-overlay" id="modal-tb-game-journal">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/tb-game-journal/cover.svg" class="modal-img" alt="Digital Snake and Ladder TB Education Journal">
+    <img data-src="assets/projects/tb-game-journal/cover.svg" class="modal-img" alt="Digital Snake and Ladder TB Education Journal" loading="lazy" decoding="async">
     <h3>Gamification of a Digital Snake and Ladder Game Based on Life Score</h3>
     <p>
       Published article in the International Journal of Social Science,
@@ -520,7 +604,7 @@
         <span>Journal PDF</span>
         <a href="assets/projects/tb-game-journal/jurnal.pdf" target="_blank" class="pdf-external-link">Open in New Tab ↗</a>
       </div>
-      <embed src="assets/projects/tb-game-journal/jurnal.pdf" type="application/pdf" class="pdf-content">
+      <embed data-src="assets/projects/tb-game-journal/jurnal.pdf" type="application/pdf" class="pdf-content">
     </div>
     <div class="modal-actions">
       <a href="https://ijset.org/index.php/ijset/article/view/1738" target="_blank" class="btn primary">
@@ -537,7 +621,7 @@
 <div class="modal-overlay" id="modal-erpnext">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/erpnext/cover.png" class="modal-img">
+    <img data-src="assets/projects/erpnext/cover.png" class="modal-img" loading="lazy" decoding="async">
     <h3>ERPNext CRM & Sales Integration</h3>
     <p>
       ERPNext configuration and integration focusing on CRM, sales pipeline,
@@ -547,9 +631,9 @@
       <span>ERPNext</span><span>Redis</span><span>Ubuntu</span>
     </div>
     <div class="modal-gallery">
-      <img src="assets/projects/erpnext/1.png">
-      <img src="assets/projects/erpnext/2.png">
-      <img src="assets/projects/erpnext/3.png">
+      <img data-src="assets/projects/erpnext/1.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/erpnext/2.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/erpnext/3.png" loading="lazy" decoding="async">
     </div>
    <!--  <a href="https://github.com/Thifaaldz/erpnext-integration" target="_blank" class="btn primary">
       GitHub Repository
@@ -561,7 +645,7 @@
 <div class="modal-overlay" id="modal-etl">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/laundry-etl/cover.png" class="modal-img">
+    <img data-src="assets/projects/laundry-etl/cover.png" class="modal-img" loading="lazy" decoding="async">
     <h3>ETL Laundry Business Analytics</h3>
     <p>
       ETL pipeline design using Pentaho to extract, transform, and load
@@ -571,9 +655,9 @@
       <span>Pentaho</span><span>ETL</span><span>Data Warehouse</span>
     </div>
     <div class="modal-gallery">
-      <img src="assets/projects/laundry-etl/1.png">
-      <img src="assets/projects/laundry-etl/2.png">
-      <img src="assets/projects/laundry-etl/3.png">
+      <img data-src="assets/projects/laundry-etl/1.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/laundry-etl/2.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/laundry-etl/3.png" loading="lazy" decoding="async">
     </div>
     <a href="https://github.com/Thifaaldz/Laundry-ETL" target="_blank" class="btn primary">
       GitHub Repository
@@ -585,7 +669,7 @@
 <div class="modal-overlay" id="modal-momcare">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/momcare/cover.png" class="modal-img">
+    <img data-src="assets/projects/momcare/cover.png" class="modal-img" loading="lazy" decoding="async">
     <h3>MomCare – Pregnancy Monitoring App</h3>
     <p>
       Mobile health application for pregnancy monitoring with weekly health tracking
@@ -595,9 +679,9 @@
       <span>Flutter</span><span>FastAPI</span><span>Python</span><span>GIS</span>
     </div>
     <div class="modal-gallery">
-      <img src="assets/projects/momcare/1.png">
-      <img src="assets/projects/momcare/2.png">
-      <img src="assets/projects/momcare/3.png">
+      <img data-src="assets/projects/momcare/1.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/momcare/2.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/momcare/3.png" loading="lazy" decoding="async">
     </div>
     <a href="https://github.com/Thifaaldz/MomCare-Mobile" target="_blank" class="btn primary">
       GitHub Repository
@@ -609,7 +693,7 @@
 <div class="modal-overlay" id="modal-distribusi">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/projects/distribusi-pertanian/cover.png" class="modal-img">
+    <img data-src="assets/projects/distribusi-pertanian/cover.png" class="modal-img" loading="lazy" decoding="async">
     <h3>Distribusi Pertanian – Agricultural Distribution Platform</h3>
     <p>
       A comprehensive web-based platform designed to support agricultural product
@@ -621,10 +705,10 @@
       <span>PHP 8.0+</span><span>MySQL 8.0</span><span>Docker</span><span>Apache</span><span>phpMyAdmin</span>
     </div>
     <div class="modal-gallery">
-      <img src="assets/projects/distribusi-pertanian/1.png">
-      <img src="assets/projects/distribusi-pertanian/2.png">
-      <img src="assets/projects/distribusi-pertanian/3.png">
-      <img src="assets/projects/distribusi-pertanian/4.png">
+      <img data-src="assets/projects/distribusi-pertanian/1.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/distribusi-pertanian/2.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/distribusi-pertanian/3.png" loading="lazy" decoding="async">
+      <img data-src="assets/projects/distribusi-pertanian/4.png" loading="lazy" decoding="async">
 
     </div>
     <a href="https://github.com/Thifaaldz/Distribusi_pertanian" target="_blank" class="btn primary">
@@ -650,7 +734,7 @@
         <span>Research Paper</span>
         <a href="https://hostjournals.com/bulletincsr/article/view/811" target="_blank" class="pdf-external-link">Open in New Tab ↗</a>
       </div>
-      <embed src="assets/projects/research-sinta/jurnal.pdf" type="application/pdf" class="pdf-content">
+      <embed data-src="assets/projects/research-sinta/jurnal.pdf" type="application/pdf" class="pdf-content">
     </div>
   </div>
 </div>
@@ -660,7 +744,7 @@
   <div class="modal modal-experience">
     <span class="modal-close">&times;</span>
     <div class="exp-photo">
-      <img src="assets/projects/research-hpt/cover.png" alt="Hypertension Research">
+      <img data-src="assets/projects/research-hpt/cover.png" alt="Hypertension Research" loading="lazy" decoding="async">
     </div>
     <div class="exp-content">
       <h3>ML & GIS Hypertension Research</h3>
@@ -674,9 +758,9 @@
         <span>Machine Learning</span><span>GIS</span><span>Python</span><span>Data Preprocessing</span>
       </div>
       <div class="modal-gallery exp-gallery">
-        <img src="assets/projects/research-hpt/1.png">
-        <img src="assets/projects/research-hpt/2.png">
-        <img src="assets/projects/research-hpt/3.png">
+        <img data-src="assets/projects/research-hpt/1.png" loading="lazy" decoding="async">
+        <img data-src="assets/projects/research-hpt/2.png" loading="lazy" decoding="async">
+        <img data-src="assets/projects/research-hpt/3.png" loading="lazy" decoding="async">
       </div>
     </div>
   </div>
@@ -687,7 +771,7 @@
   <div class="modal modal-experience">
     <span class="modal-close">&times;</span>
     <div class="exp-photo">
-      <img src="assets/experience/humanis/cover.png" alt="HUMANIS Program">
+      <img data-src="assets/experience/humanis/cover.png" alt="HUMANIS Program" loading="lazy" decoding="async">
     </div>
     <div class="exp-content">
       <h3>HUMANIS Program Staff</h3>
@@ -701,10 +785,10 @@
         <span>Leadership</span><span>Program Planning</span><span>Community Service</span>
       </div>
       <div class="modal-gallery exp-gallery">
-        <img src="assets/experience/humanis/1.png">
-        <img src="assets/experience/humanis/2.png">
-        <img src="assets/experience/humanis/3.png">
-        <img src="assets/experience/humanis/4.png">
+        <img data-src="assets/experience/humanis/1.png" loading="lazy" decoding="async">
+        <img data-src="assets/experience/humanis/2.png" loading="lazy" decoding="async">
+        <img data-src="assets/experience/humanis/3.png" loading="lazy" decoding="async">
+        <img data-src="assets/experience/humanis/4.png" loading="lazy" decoding="async">
       </div>
     </div>
   </div>
@@ -715,7 +799,7 @@
   <div class="modal modal-experience">
     <span class="modal-close">&times;</span>
     <div class="exp-photo">
-      <img src="assets/experience/mosque/cover.png" alt="Jami Al-Madinah Mosque">
+      <img data-src="assets/experience/mosque/cover.png" alt="Jami Al-Madinah Mosque" loading="lazy" decoding="async">
     </div>
     <div class="exp-content">
       <h3>Jami Al-Madinah Mosque</h3>
@@ -729,9 +813,9 @@
         <span>Event Management</span><span>Public Speaking</span><span>Leadership</span>
       </div>
       <div class="exp-gallery">
-        <img src="assets/experience/mosque/1.png">
-        <img src="assets/experience/mosque/2.png">
-        <img src="assets/experience/mosque/3.png">
+        <img data-src="assets/experience/mosque/1.png" loading="lazy" decoding="async">
+        <img data-src="assets/experience/mosque/2.png" loading="lazy" decoding="async">
+        <img data-src="assets/experience/mosque/3.png" loading="lazy" decoding="async">
       </div>
     </div>
   </div>
@@ -792,42 +876,42 @@
   <div class="cert-grid">
     <div class="cert-card" data-modal="modal-cert-ai">
       <a href="https://www.dicoding.com/certificates/L4PQE9ND4PO1" target="_blank">
-        <img src="assets/certs/ai-basics.png" alt="AI Basics - Dicoding" class="cert-img-thumb">
+        <img data-src="assets/certs/ai-basics.png" alt="AI Basics - Dicoding" class="cert-img-thumb" loading="lazy" decoding="async">
       </a>
       <span>AI Basics – Dicoding</span>
     </div>
 
     <div class="cert-card" data-modal="modal-cert-ds">
       <a href="https://www.dicoding.com/certificates/07Z63MR1YZQR" target="_blank">
-        <img src="assets/certs/data-science.png" alt="Data Science Basics - Dicoding" class="cert-img-thumb">
+        <img data-src="assets/certs/data-science.png" alt="Data Science Basics - Dicoding" class="cert-img-thumb" loading="lazy" decoding="async">
       </a>
       <span>Data Science Basics – Dicoding</span>
     </div>
 
     <div class="cert-card" data-modal="modal-cert-viz">
       <a href="https://www.dicoding.com/certificates/53XEDG16YPRN" target="_blank">
-        <img src="assets/certs/data-viz.png" alt="Data Visualization - Dicoding" class="cert-img-thumb">
+        <img data-src="assets/certs/data-viz.png" alt="Data Visualization - Dicoding" class="cert-img-thumb" loading="lazy" decoding="async">
       </a>
       <span>Data Visualization – Dicoding</span>
     </div>
 
     <div class="cert-card" data-modal="modal-cert-sql">
       <a href="https://www.dicoding.com/certificates/QLZ93EN22Z5D" target="_blank">
-        <img src="assets/certs/sql.png" alt="SQL Fundamentals - Dicoding" class="cert-img-thumb">
+        <img data-src="assets/certs/sql.png" alt="SQL Fundamentals - Dicoding" class="cert-img-thumb" loading="lazy" decoding="async">
       </a>
       <span>SQL Fundamentals – Dicoding</span>
     </div>
 
     <div class="cert-card" data-modal="modal-cert-python">
       <a href="https://www.dicoding.com/certificates/NVP75E3JOXR0" target="_blank">
-        <img src="assets/certs/python.png" alt="Python Programming - Dicoding" class="cert-img-thumb">
+        <img data-src="assets/certs/python.png" alt="Python Programming - Dicoding" class="cert-img-thumb" loading="lazy" decoding="async">
       </a>
       <span>Python Programming – Dicoding</span>
     </div>
 
     <div class="cert-card" data-modal="modal-cert-prompt">
       <a href="https://www.dicoding.com/certificates/JMZVVJ53RZN9" target="_blank">
-        <img src="assets/certs/prompt.png" alt="Prompt Engineering for Software Developers - Dicoding" class="cert-img-thumb">
+        <img data-src="assets/certs/prompt.png" alt="Prompt Engineering for Software Developers - Dicoding" class="cert-img-thumb" loading="lazy" decoding="async">
       </a>
       <span>Prompt Engineering for Software Developers – Dicoding</span>
     </div>
@@ -858,7 +942,7 @@
 <div class="modal-overlay" id="modal-cert-ai">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/certs/ai-basics.png" class="modal-img cert-modal-img">
+    <img data-src="assets/certs/ai-basics.png" class="modal-img cert-modal-img" loading="lazy" decoding="async">
     <h3>AI Basics – Dicoding</h3>
     <p>Fundamental understanding of Artificial Intelligence concepts and applications.</p>
     <div class="modal-tech">
@@ -874,7 +958,7 @@
 <div class="modal-overlay" id="modal-cert-ds">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/certs/data-science.png" class="modal-img cert-modal-img">
+    <img data-src="assets/certs/data-science.png" class="modal-img cert-modal-img" loading="lazy" decoding="async">
     <h3>Data Science Basics – Dicoding</h3>
     <p>Introduction to data science methodologies and practical applications.</p>
     <div class="modal-tech">
@@ -890,7 +974,7 @@
 <div class="modal-overlay" id="modal-cert-viz">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/certs/data-viz.png" class="modal-img cert-modal-img">
+    <img data-src="assets/certs/data-viz.png" class="modal-img cert-modal-img" loading="lazy" decoding="async">
     <h3>Data Visualization – Dicoding</h3>
     <p>Skills in presenting data through effective visualizations.</p>
     <div class="modal-tech">
@@ -906,7 +990,7 @@
 <div class="modal-overlay" id="modal-cert-sql">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/certs/sql.png" class="modal-img cert-modal-img">
+    <img data-src="assets/certs/sql.png" class="modal-img cert-modal-img" loading="lazy" decoding="async">
     <h3>SQL Fundamentals – Dicoding</h3>
     <p>Core SQL concepts for database querying and management.</p>
     <div class="modal-tech">
@@ -922,7 +1006,7 @@
 <div class="modal-overlay" id="modal-cert-python">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/certs/python.png" class="modal-img cert-modal-img">
+    <img data-src="assets/certs/python.png" class="modal-img cert-modal-img" loading="lazy" decoding="async">
     <h3>Python Programming – Dicoding</h3>
     <p>Programming fundamentals using Python language.</p>
     <div class="modal-tech">
@@ -938,7 +1022,7 @@
 <div class="modal-overlay" id="modal-cert-prompt">
   <div class="modal">
     <span class="modal-close">&times;</span>
-    <img src="assets/certs/prompt.png" class="modal-img cert-modal-img">
+    <img data-src="assets/certs/prompt.png" class="modal-img cert-modal-img" loading="lazy" decoding="async">
     <h3>Prompt Engineering for Software Developers – Dicoding</h3>
     <p>Skills in crafting effective prompts for AI-assisted software development.</p>
     <div class="modal-tech">
@@ -958,11 +1042,12 @@
   <span class="lightbox-nav lightbox-prev">&#10094;</span>
   <span class="lightbox-nav lightbox-next">&#10095;</span>
   <div class="lightbox-content">
-    <img src="" alt="Enlarged image">
+    <img alt="Enlarged image" loading="lazy" decoding="async">
   </div>
   <div class="lightbox-caption"></div>
 </div>
 
-<script src="script.js"></script>
+<script src="vendor/three.min.js" defer></script>
+<script src="script.js" defer></script>
 </body>
 </html>

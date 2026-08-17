@@ -18,13 +18,165 @@ function isMobile() {
   return window.innerWidth <= 768;
 }
 
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function waitForEvent(target, eventName, timeout = 1200) {
+  return new Promise(resolve => {
+    let done = false;
+
+    function finish() {
+      if (done) return;
+      done = true;
+      target.removeEventListener(eventName, finish);
+      resolve();
+    }
+
+    target.addEventListener(eventName, finish, { once: true });
+    setTimeout(finish, timeout);
+  });
+}
+
+function waitForHeroImage(timeout = 1200) {
+  const image = document.querySelector(".profile-bg-image");
+
+  if (!image || image.complete) {
+    return Promise.resolve();
+  }
+
+  const decoded = typeof image.decode === "function"
+    ? image.decode().catch(() => {})
+    : waitForEvent(image, "load", timeout);
+
+  return Promise.race([decoded, wait(timeout)]);
+}
+
+function waitForFonts(timeout = 1400) {
+  if (!document.fonts || !document.fonts.ready) {
+    return Promise.resolve();
+  }
+
+  return Promise.race([document.fonts.ready.catch(() => {}), wait(timeout)]);
+}
+
+function initPageLoader() {
+  const loader = document.getElementById("site-loader");
+
+  if (!loader) return;
+
+  const startedAt = performance.now();
+  const minimumVisible = 520;
+  const hardTimeout = 2600;
+
+  function hideLoader() {
+    const remaining = Math.max(0, minimumVisible - (performance.now() - startedAt));
+
+    setTimeout(() => {
+      document.body.classList.remove("is-loading");
+      document.body.classList.add("is-ready");
+      restoreHashScroll();
+
+      loader.addEventListener("transitionend", () => loader.remove(), { once: true });
+      setTimeout(() => loader.remove(), 700);
+    }, remaining);
+  }
+
+  Promise.race([
+    Promise.all([
+      waitForHeroImage(),
+      waitForFonts(),
+      waitForEvent(window, "web3scene:ready", 1500)
+    ]),
+    wait(hardTimeout)
+  ]).then(hideLoader);
+}
+
+function restoreHashScroll() {
+  if (!window.location.hash) return;
+
+  const target = document.querySelector(window.location.hash);
+
+  if (!target) return;
+
+  const scrollToTarget = () => target.scrollIntoView({ block: "start", behavior: "auto" });
+
+  requestAnimationFrame(scrollToTarget);
+  setTimeout(scrollToTarget, 120);
+  setTimeout(scrollToTarget, 480);
+}
+
+function optimizeMediaAttributes() {
+  document.querySelectorAll("img:not(.profile-bg-image)").forEach(image => {
+    if (!image.hasAttribute("loading")) {
+      image.setAttribute("loading", "lazy");
+    }
+
+    if (!image.hasAttribute("decoding")) {
+      image.setAttribute("decoding", "async");
+    }
+  });
+}
+
+function loadDeferredMedia(element) {
+  const source = element?.getAttribute("data-src");
+
+  if (!source) return;
+
+  element.setAttribute("src", source);
+  element.removeAttribute("data-src");
+}
+
+function initLazyMedia() {
+  const media = Array.from(document.querySelectorAll("img[data-src]"))
+    .filter(element => !element.closest(".modal-overlay"));
+
+  if (!media.length) return;
+
+  if (!("IntersectionObserver" in window)) {
+    media.forEach(loadDeferredMedia);
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      loadDeferredMedia(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, {
+    rootMargin: "720px 0px",
+    threshold: 0.01
+  });
+
+  media.forEach(element => observer.observe(element));
+}
+
+function hydrateDeferredMedia(container) {
+  if (!container) return;
+
+  container.querySelectorAll("[data-src]").forEach(element => {
+    loadDeferredMedia(element);
+  });
+}
+
+function openModal(modal) {
+  if (!modal) return;
+
+  hydrateDeferredMedia(modal);
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+initPageLoader();
+
 /* =====================
    SCROLL REVEAL
 ===================== */
 const reveals = document.querySelectorAll(".reveal");
 
 if (reveals.length) {
-  // Use lower threshold on mobile for better performance
   const threshold = isMobile() ? 0.1 : 0.15;
   
   const observer = new IntersectionObserver(
@@ -32,8 +184,8 @@ if (reveals.length) {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add("active");
-          // Stop observing once revealed to improve performance
-          observer.unobserve(entry.target);
+        } else if (!isMobile()) {
+          entry.target.classList.remove("active");
         }
       });
     },
@@ -41,6 +193,58 @@ if (reveals.length) {
   );
 
   reveals.forEach(el => observer.observe(el));
+}
+
+function initScrollDepth() {
+  const targets = Array.from(document.querySelectorAll(".section.reveal"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!targets.length || reduceMotion) {
+    targets.forEach(target => target.classList.add("active"));
+    return;
+  }
+
+  let ticking = false;
+
+  function update() {
+    const viewport = window.innerHeight || 1;
+    const mobile = isMobile();
+
+    targets.forEach((target, index) => {
+      const rect = target.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const raw = (center - viewport / 2) / viewport;
+      const depth = Math.max(-1, Math.min(1, raw));
+      const visible = rect.bottom > 0 && rect.top < viewport;
+      const intensity = Math.max(0, 1 - Math.abs(depth));
+      const translateY = depth * (mobile ? 18 : 62);
+      const translateZ = -Math.abs(depth) * (mobile ? 0 : 140);
+      const rotateX = -depth * (mobile ? 0 : 12);
+      const rotateY = depth * (mobile ? 0 : index % 2 === 0 ? -3 : 3);
+      const opacity = mobile ? 1 : Math.max(0.42, 0.58 + intensity * 0.42);
+
+      target.classList.toggle("active", visible);
+      target.classList.add("scroll-3d");
+      target.style.opacity = opacity.toFixed(3);
+      target.style.transform = `perspective(1200px) translate3d(0, ${translateY.toFixed(2)}px, ${translateZ.toFixed(2)}px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+      target.style.setProperty("--scroll-saturation", (0.78 + intensity * 0.34).toFixed(2));
+      target.style.setProperty("--scroll-blur", `${((1 - intensity) * (mobile ? 0 : 1.4)).toFixed(2)}px`);
+      target.style.setProperty("--section-glow", (intensity * 0.75).toFixed(2));
+    });
+
+    ticking = false;
+  }
+
+  function requestUpdate() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }
+
+  update();
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", throttle(requestUpdate, 120), { passive: true });
 }
 
 /* =====================
@@ -52,8 +256,7 @@ document.querySelectorAll(".project-card").forEach(card => {
     if (modalId) {
       const modal = document.getElementById(modalId);
       if (modal) {
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
+        openModal(modal);
       }
     }
   });
@@ -73,8 +276,7 @@ document.querySelectorAll(".timeline-item[data-modal]").forEach(item => {
       const modal = document.getElementById(modalId);
       
       if (modal) {
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
+        openModal(modal);
       }
     }
   });
@@ -286,6 +488,248 @@ class ImageLightbox {
 
 // Initialize lightbox when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
+  optimizeMediaAttributes();
+  initLazyMedia();
   new ImageLightbox();
+  initScrollDepth();
+  initWeb3Scene();
 });
 
+window.addEventListener("hashchange", () => {
+  setTimeout(restoreHashScroll, 80);
+});
+
+/* =====================
+   WEB3 THREE.JS SCENE
+===================== */
+function initWeb3Scene() {
+  const canvas = document.getElementById("web3-scene");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!canvas || typeof THREE === "undefined") {
+    document.body.classList.add("web3-fallback");
+    window.dispatchEvent(new Event("web3scene:ready"));
+    return;
+  }
+
+  let renderer;
+
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      preserveDrawingBuffer: false,
+      powerPreference: "high-performance"
+    });
+
+    if (!renderer.getContext()) {
+      throw new Error("WebGL context unavailable");
+    }
+  } catch (error) {
+    document.body.classList.add("web3-fallback");
+    window.dispatchEvent(new Event("web3scene:ready"));
+    return;
+  }
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  const clock = new THREE.Clock();
+  const pointer = { x: 0, y: 0 };
+  const scroll = { y: window.scrollY || 0, progress: 0 };
+  const group = new THREE.Group();
+  const objects = [];
+  let firstFrameRendered = false;
+
+  camera.position.set(0, 0.35, 8.5);
+  scene.add(group);
+
+  const ambient = new THREE.AmbientLight(0x6c7dff, 0.62);
+  const key = new THREE.DirectionalLight(0x22e6ff, 1.45);
+  const rim = new THREE.PointLight(0xffb648, 1.9, 16);
+  const rose = new THREE.PointLight(0xff5f8f, 1.2, 14);
+
+  key.position.set(-2.5, 3, 5);
+  rim.position.set(3.8, -1.2, 3.6);
+  rose.position.set(-4, -2, 4);
+  scene.add(ambient, key, rim, rose);
+
+  const palettes = [
+    { color: 0x22e6ff, emissive: 0x063c46 },
+    { color: 0xffb648, emissive: 0x4b2a06 },
+    { color: 0xff5f8f, emissive: 0x4a081d },
+    { color: 0x9dff7a, emissive: 0x173a0d },
+    { color: 0x8f7cff, emissive: 0x19105a }
+  ];
+
+  const shapes = [
+    new THREE.IcosahedronGeometry(0.86, 1),
+    new THREE.DodecahedronGeometry(0.72, 0),
+    new THREE.TetrahedronGeometry(0.9, 0),
+    new THREE.OctahedronGeometry(0.78, 0)
+  ];
+
+  const positions = [
+    [-3.7, 1.55, -1.1],
+    [3.25, 1.05, -1.5],
+    [4.2, -1.8, -0.9],
+    [-3.25, -1.7, -1.8],
+    [0.8, 2.35, -2.3],
+    [-0.35, -2.35, -2.2]
+  ];
+
+  positions.forEach((position, index) => {
+    const palette = palettes[index % palettes.length];
+    const material = new THREE.MeshStandardMaterial({
+      color: palette.color,
+      emissive: palette.emissive,
+      emissiveIntensity: 0.28,
+      roughness: 0.34,
+      metalness: 0.72,
+      transparent: true,
+      opacity: 0.82
+    });
+    const mesh = new THREE.Mesh(shapes[index % shapes.length], material);
+    mesh.position.set(...position);
+    mesh.rotation.set(index * 0.45, index * 0.62, index * 0.28);
+    mesh.scale.setScalar(index === 2 ? 0.92 : 1);
+    mesh.userData = {
+      speed: 0.18 + index * 0.035,
+      drift: 0.2 + index * 0.04,
+      baseY: position[1]
+    };
+
+    const wire = new THREE.Mesh(
+      shapes[index % shapes.length],
+      new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.18
+      })
+    );
+    wire.scale.setScalar(1.018);
+    mesh.add(wire);
+    group.add(mesh);
+    objects.push(mesh);
+  });
+
+  const blockGroup = createTetrisCluster();
+  blockGroup.position.set(2.2, -0.15, -2.8);
+  blockGroup.rotation.set(0.35, -0.55, 0.12);
+  blockGroup.userData = { speed: 0.26, baseY: -0.15 };
+  group.add(blockGroup);
+  objects.push(blockGroup);
+
+  const particleGeometry = new THREE.BufferGeometry();
+  const particleCount = isMobile() ? 82 : 150;
+  const vertices = new Float32Array(particleCount * 3);
+
+  for (let i = 0; i < particleCount; i++) {
+    vertices[i * 3] = (Math.random() - 0.5) * 10;
+    vertices[i * 3 + 1] = (Math.random() - 0.5) * 6;
+    vertices[i * 3 + 2] = -2 - Math.random() * 5;
+  }
+
+  particleGeometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+
+  const particles = new THREE.Points(
+    particleGeometry,
+    new THREE.PointsMaterial({
+      color: 0x22e6ff,
+      size: 0.025,
+      transparent: true,
+      opacity: 0.62,
+      depthWrite: false
+    })
+  );
+  scene.add(particles);
+
+  function createTetrisCluster() {
+    const cluster = new THREE.Group();
+    const cubeGeo = new THREE.BoxGeometry(0.42, 0.42, 0.42);
+    const cubePositions = [
+      [0, 0, 0],
+      [0.44, 0, 0],
+      [0.88, 0, 0],
+      [0.44, 0.44, 0],
+      [0.44, -0.44, 0],
+      [0.88, -0.44, 0]
+    ];
+
+    cubePositions.forEach((pos, index) => {
+      const palette = palettes[index % palettes.length];
+      const cube = new THREE.Mesh(
+        cubeGeo,
+        new THREE.MeshStandardMaterial({
+          color: palette.color,
+          emissive: palette.emissive,
+          emissiveIntensity: 0.22,
+          roughness: 0.4,
+          metalness: 0.6
+        })
+      );
+      cube.position.set(...pos);
+      cluster.add(cube);
+    });
+
+    return cluster;
+  }
+
+  function resize() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile() ? 1.15 : 1.45));
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+  }
+
+  function onPointerMove(event) {
+    pointer.x = (event.clientX / window.innerWidth - 0.5) * 2;
+    pointer.y = (event.clientY / window.innerHeight - 0.5) * 2;
+  }
+
+  function onSceneScroll() {
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    scroll.y = window.scrollY || 0;
+    scroll.progress = Math.max(0, Math.min(1, scroll.y / maxScroll));
+  }
+
+  function animate() {
+    const elapsed = clock.getElapsedTime();
+    const scrollLift = scroll.progress * 2.8;
+
+    objects.forEach((object, index) => {
+      object.rotation.x += (0.002 + index * 0.00035) * (reduceMotion ? 0.2 : 1);
+      object.rotation.y += (0.003 + index * 0.00045) * (reduceMotion ? 0.2 : 1);
+      object.position.y = (object.userData.baseY || object.position.y) + Math.sin(elapsed * (object.userData.speed || 0.28) + index) * 0.18 - scrollLift;
+    });
+
+    group.rotation.y += ((pointer.x * 0.12) - group.rotation.y) * 0.04;
+    group.rotation.x += ((-pointer.y * 0.08) - group.rotation.x) * 0.04;
+    group.position.x += ((scroll.progress - 0.5) * 0.9 - group.position.x) * 0.035;
+    camera.position.y += ((0.35 - scroll.progress * 0.55) - camera.position.y) * 0.035;
+    camera.position.z += ((8.5 - scroll.progress * 1.15) - camera.position.z) * 0.035;
+    particles.rotation.y = elapsed * 0.018;
+    particles.rotation.x = Math.sin(elapsed * 0.12) * 0.035;
+    particles.position.y = -scroll.progress * 1.6;
+    renderer.render(scene, camera);
+
+    if (!firstFrameRendered) {
+      firstFrameRendered = true;
+      window.dispatchEvent(new Event("web3scene:ready"));
+    }
+
+    if (!reduceMotion) {
+      requestAnimationFrame(animate);
+    }
+  }
+
+  window.addEventListener("resize", throttle(resize, 100), { passive: true });
+  window.addEventListener("pointermove", throttle(onPointerMove, 24), { passive: true });
+  window.addEventListener("scroll", throttle(onSceneScroll, 16), { passive: true });
+  resize();
+  onSceneScroll();
+  animate();
+}
