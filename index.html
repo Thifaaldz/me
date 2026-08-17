@@ -99,6 +99,19 @@
     <span class="site-loader__text">Loading Portfolio</span>
   </div>
 </div>
+<script>
+  window.__portfolioLoaderFallback = setTimeout(function () {
+    document.body.classList.remove("is-loading");
+    document.body.classList.add("is-ready", "app-force-ready");
+
+    var loader = document.getElementById("site-loader");
+    if (loader) {
+      setTimeout(function () {
+        loader.remove();
+      }, 500);
+    }
+  }, 4200);
+</script>
 
 <!-- ===================== -->
 <!-- BACKGROUND EFFECTS -->

@@ -73,6 +73,7 @@ function initPageLoader() {
     const remaining = Math.max(0, minimumVisible - (performance.now() - startedAt));
 
     setTimeout(() => {
+      clearTimeout(window.__portfolioLoaderFallback);
       document.body.classList.remove("is-loading");
       document.body.classList.add("is-ready");
       restoreHashScroll();
@@ -95,7 +96,13 @@ function initPageLoader() {
 function restoreHashScroll() {
   if (!window.location.hash) return;
 
-  const target = document.querySelector(window.location.hash);
+  let target;
+
+  try {
+    target = document.querySelector(window.location.hash);
+  } catch (error) {
+    return;
+  }
 
   if (!target) return;
 
