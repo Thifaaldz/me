@@ -191,8 +191,7 @@ if (reveals.length) {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add("active");
-        } else if (!isMobile()) {
-          entry.target.classList.remove("active");
+          observer.unobserve(entry.target);
         }
       });
     },
@@ -200,58 +199,6 @@ if (reveals.length) {
   );
 
   reveals.forEach(el => observer.observe(el));
-}
-
-function initScrollDepth() {
-  const targets = Array.from(document.querySelectorAll(".section.reveal"));
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (!targets.length || reduceMotion) {
-    targets.forEach(target => target.classList.add("active"));
-    return;
-  }
-
-  let ticking = false;
-
-  function update() {
-    const viewport = window.innerHeight || 1;
-    const mobile = isMobile();
-
-    targets.forEach((target, index) => {
-      const rect = target.getBoundingClientRect();
-      const center = rect.top + rect.height / 2;
-      const raw = (center - viewport / 2) / viewport;
-      const depth = Math.max(-1, Math.min(1, raw));
-      const visible = rect.bottom > 0 && rect.top < viewport;
-      const intensity = Math.max(0, 1 - Math.abs(depth));
-      const translateY = depth * (mobile ? 18 : 62);
-      const translateZ = -Math.abs(depth) * (mobile ? 0 : 140);
-      const rotateX = -depth * (mobile ? 0 : 12);
-      const rotateY = depth * (mobile ? 0 : index % 2 === 0 ? -3 : 3);
-      const opacity = mobile ? 1 : Math.max(0.42, 0.58 + intensity * 0.42);
-
-      target.classList.toggle("active", visible);
-      target.classList.add("scroll-3d");
-      target.style.opacity = opacity.toFixed(3);
-      target.style.transform = `perspective(1200px) translate3d(0, ${translateY.toFixed(2)}px, ${translateZ.toFixed(2)}px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
-      target.style.setProperty("--scroll-saturation", (0.78 + intensity * 0.34).toFixed(2));
-      target.style.setProperty("--scroll-blur", `${((1 - intensity) * (mobile ? 0 : 1.4)).toFixed(2)}px`);
-      target.style.setProperty("--section-glow", (intensity * 0.75).toFixed(2));
-    });
-
-    ticking = false;
-  }
-
-  function requestUpdate() {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(update);
-    }
-  }
-
-  update();
-  window.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", throttle(requestUpdate, 120), { passive: true });
 }
 
 /* =====================
@@ -498,7 +445,6 @@ document.addEventListener("DOMContentLoaded", () => {
   optimizeMediaAttributes();
   initLazyMedia();
   new ImageLightbox();
-  initScrollDepth();
   initWeb3Scene();
 });
 
@@ -547,6 +493,9 @@ function initWeb3Scene() {
   const group = new THREE.Group();
   const objects = [];
   let firstFrameRendered = false;
+  let animationFrameId = null;
+  let lastRenderAt = 0;
+  const frameInterval = 1000 / (isMobile() ? 18 : 24);
 
   camera.position.set(0, 0.35, 8.5);
   scene.add(group);
@@ -629,7 +578,7 @@ function initWeb3Scene() {
   objects.push(blockGroup);
 
   const particleGeometry = new THREE.BufferGeometry();
-  const particleCount = isMobile() ? 82 : 150;
+  const particleCount = isMobile() ? 56 : 105;
   const vertices = new Float32Array(particleCount * 3);
 
   for (let i = 0; i < particleCount; i++) {
@@ -686,7 +635,7 @@ function initWeb3Scene() {
   function resize() {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile() ? 1.15 : 1.45));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile() ? 1 : 1.25));
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
@@ -703,7 +652,15 @@ function initWeb3Scene() {
     scroll.progress = Math.max(0, Math.min(1, scroll.y / maxScroll));
   }
 
-  function animate() {
+  function animate(now = 0) {
+    animationFrameId = requestAnimationFrame(animate);
+
+    if (document.hidden || (!reduceMotion && now - lastRenderAt < frameInterval)) {
+      return;
+    }
+
+    lastRenderAt = now;
+
     const elapsed = clock.getElapsedTime();
     const scrollLift = scroll.progress * 2.8;
 
@@ -728,14 +685,20 @@ function initWeb3Scene() {
       window.dispatchEvent(new Event("web3scene:ready"));
     }
 
-    if (!reduceMotion) {
-      requestAnimationFrame(animate);
+    if (reduceMotion && animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
     }
   }
 
   window.addEventListener("resize", throttle(resize, 100), { passive: true });
   window.addEventListener("pointermove", throttle(onPointerMove, 24), { passive: true });
-  window.addEventListener("scroll", throttle(onSceneScroll, 16), { passive: true });
+  window.addEventListener("scroll", throttle(onSceneScroll, 80), { passive: true });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && !animationFrameId) {
+      animate();
+    }
+  });
   resize();
   onSceneScroll();
   animate();

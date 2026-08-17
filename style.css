@@ -301,11 +301,11 @@ body.web3-fallback .bg-glow {
 }
 
 .btn:hover {
-  transform: translateY(-4px) rotateX(8deg);
+  transform: translateY(-2px);
   border-color: rgba(34, 230, 255, 0.5);
   box-shadow:
-    0 20px 46px rgba(0, 0, 0, 0.34),
-    0 0 26px rgba(34, 230, 255, 0.22);
+    0 14px 34px rgba(0, 0, 0, 0.3),
+    0 0 18px rgba(34, 230, 255, 0.16);
 }
 
 .btn.primary {
@@ -332,7 +332,6 @@ body.web3-fallback .bg-glow {
     0 0 44px rgba(34, 230, 255, 0.18);
   transform: perspective(900px) rotateY(-8deg) rotateX(5deg);
   transform-style: preserve-3d;
-  animation: floatPanel 6s ease-in-out infinite;
   isolation: isolate;
 }
 
@@ -431,7 +430,6 @@ body.web3-fallback .bg-glow {
   padding: 82px 0;
   position: relative;
   transform-style: preserve-3d;
-  will-change: transform, opacity, filter;
 }
 
 .section h2 {
@@ -530,11 +528,11 @@ body.web3-fallback .bg-glow {
 .tech-category:hover,
 .project-card:hover,
 .cert-card:hover {
-  transform: translateY(-8px) rotateX(2deg);
+  transform: translateY(-4px);
   border-color: rgba(34, 230, 255, 0.38);
   box-shadow:
-    0 26px 72px rgba(0, 0, 0, 0.52),
-    0 0 32px rgba(34, 230, 255, 0.18);
+    0 18px 46px rgba(0, 0, 0, 0.44),
+    0 0 20px rgba(34, 230, 255, 0.12);
 }
 
 .timeline-item h3 {
@@ -734,16 +732,15 @@ body.web3-fallback .bg-glow {
   height: 205px;
   object-fit: cover;
   filter: saturate(0.94) contrast(1.06) brightness(0.86);
-  transition: filter 0.28s ease, transform 0.28s ease;
+  transition: filter 0.2s ease;
 }
 
 .project-card:hover {
-  transform: translateY(-10px) rotateX(3deg) rotateY(-2deg);
+  transform: translateY(-4px);
 }
 
 .project-card:hover img {
   filter: saturate(1.12) contrast(1.03) brightness(0.98);
-  transform: scale(1.05);
 }
 
 .project-card-logo img {
@@ -863,34 +860,14 @@ body.web3-fallback .bg-glow {
 }
 
 .reveal {
-  opacity: 0.35;
-  transform:
-    perspective(1200px)
-    translate3d(0, 54px, -80px)
-    rotateX(10deg);
-  transition: opacity 0.22s ease, filter 0.22s ease;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.32s ease, transform 0.32s ease;
 }
 
 .reveal.active {
   opacity: 1;
-  filter: saturate(1);
-}
-
-.reveal.scroll-3d {
-  filter: saturate(var(--scroll-saturation, 0.8)) blur(var(--scroll-blur, 0px));
-}
-
-.reveal.scroll-3d::before {
-  content: "";
-  position: absolute;
-  inset: 34px -18px auto;
-  z-index: -1;
-  height: 42%;
-  border-radius: 34px;
-  background: linear-gradient(90deg, rgba(34, 230, 255, 0.08), rgba(255, 95, 143, 0.05), transparent);
-  opacity: var(--section-glow, 0);
-  transform: translateZ(-120px);
-  pointer-events: none;
+  transform: translateY(0);
 }
 
 @keyframes heroIn {
@@ -901,16 +878,6 @@ body.web3-fallback .bg-glow {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes floatPanel {
-  0%,
-  100% {
-    transform: perspective(900px) rotateY(-8deg) rotateX(5deg) translateY(0);
-  }
-  50% {
-    transform: perspective(900px) rotateY(-4deg) rotateX(7deg) translateY(-16px);
   }
 }
 
