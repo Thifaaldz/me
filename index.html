@@ -17,110 +17,8 @@
   <!-- Styles -->
   <link rel="preload" href="assets/profile.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
-  <style>
-    .site-loader {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      display: grid;
-      place-items: center;
-      background:
-        radial-gradient(circle at 28% 24%, rgba(34, 230, 255, 0.16), transparent 28%),
-        radial-gradient(circle at 74% 66%, rgba(255, 95, 143, 0.12), transparent 32%),
-        #07090f;
-      color: #f5f7fb;
-      font-family: "Fira Code", monospace;
-      transition: opacity 0.34s ease, visibility 0.34s ease;
-    }
-
-    .site-loader__panel {
-      width: min(320px, calc(100vw - 44px));
-      text-align: center;
-    }
-
-    .site-loader__blocks {
-      display: grid;
-      grid-template-columns: repeat(4, 26px);
-      grid-auto-rows: 26px;
-      justify-content: center;
-      gap: 7px;
-      margin-bottom: 20px;
-      transform: perspective(520px) rotateX(16deg) rotateZ(-4deg);
-    }
-
-    .site-loader__blocks span {
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      background: #22e6ff;
-      box-shadow: 0 0 24px rgba(34, 230, 255, 0.28);
-      animation: loaderPulse 1.05s ease-in-out infinite;
-    }
-
-    .site-loader__blocks span:nth-child(2) { background: #ffb648; animation-delay: 0.08s; }
-    .site-loader__blocks span:nth-child(3) { background: #ff5f8f; animation-delay: 0.16s; }
-    .site-loader__blocks span:nth-child(4) { background: #9dff7a; animation-delay: 0.24s; }
-    .site-loader__blocks span:nth-child(5) { background: #8f7cff; animation-delay: 0.32s; }
-    .site-loader__blocks span:nth-child(6) { background: #22e6ff; animation-delay: 0.4s; }
-
-    .site-loader__text {
-      display: block;
-      color: #a8b3c7;
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    body.is-ready .site-loader,
-    body.app-force-ready .site-loader {
-      visibility: hidden;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    @keyframes loaderPulse {
-      0%, 100% { transform: translateY(0) scale(1); filter: brightness(0.9); }
-      50% { transform: translateY(-9px) scale(1.08); filter: brightness(1.2); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .site-loader__blocks span {
-        animation: none;
-      }
-    }
-  </style>
-  <noscript><style>.site-loader{display:none}</style></noscript>
 </head>
-<body class="is-loading">
-<div class="site-loader" id="site-loader" role="status" aria-live="polite" aria-label="Loading portfolio">
-  <div class="site-loader__panel">
-    <div class="site-loader__blocks" aria-hidden="true">
-      <span></span><span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <span class="site-loader__text">Loading Portfolio</span>
-  </div>
-</div>
-<script>
-  window.__portfolioLoaderFallback = setTimeout(function () {
-    document.body.classList.remove("is-loading");
-    document.body.classList.add("is-ready", "app-force-ready");
-
-    var loader = document.getElementById("site-loader");
-    if (loader) {
-      setTimeout(function () {
-        loader.remove();
-      }, 500);
-    }
-  }, 4200);
-</script>
-
-<!-- ===================== -->
-<!-- BACKGROUND EFFECTS -->
-<!-- ===================== -->
-<div class="bg-grid"></div>
-<div class="bg-glow"></div>
-<div class="binary-rain"></div>
-<div class="cursor-code"></div>
-<canvas class="web3-scene" id="web3-scene" aria-hidden="true"></canvas>
+<body>
 
 <!-- ===================== -->
 <!-- HERO SECTION -->
@@ -1060,7 +958,6 @@
   <div class="lightbox-caption"></div>
 </div>
 
-<script src="vendor/three.min.js" defer></script>
 <script src="script.js" defer></script>
 </body>
 </html>
