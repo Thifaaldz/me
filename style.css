@@ -1,14 +1,14 @@
 :root {
-  --bg: #f8fbff;
+  --bg: #f6f8fc;
   --surface: #ffffff;
   --surface-soft: #eef5ff;
   --text: #172033;
   --muted: #667085;
   --line: #d8dee8;
-  --accent: #2563eb;
-  --accent-soft: rgba(37, 99, 235, 0.1);
-  --cyan: #0891b2;
-  --emerald: #059669;
+  --accent: #3157d5;
+  --accent-soft: rgba(49, 87, 213, 0.1);
+  --cyan: #0f8fa8;
+  --emerald: #0f9f77;
   --amber: #d97706;
   --radius: 10px;
   --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
@@ -28,9 +28,12 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 8% 4%, rgba(37, 99, 235, 0.13), transparent 26rem),
-    radial-gradient(circle at 95% 0%, rgba(8, 145, 178, 0.12), transparent 24rem),
-    linear-gradient(180deg, #fbfdff 0%, var(--bg) 48%, #ffffff 100%);
+    linear-gradient(90deg, rgba(49, 87, 213, 0.045) 1px, transparent 1px) 0 0 / 46px 46px,
+    linear-gradient(rgba(15, 143, 168, 0.04) 1px, transparent 1px) 0 0 / 46px 46px,
+    radial-gradient(circle at 12% 6%, rgba(49, 87, 213, 0.16), transparent 24rem),
+    radial-gradient(circle at 88% 12%, rgba(15, 159, 119, 0.12), transparent 22rem),
+    linear-gradient(180deg, #fbfdff 0%, var(--bg) 46%, #ffffff 100%);
+  background-attachment: fixed, fixed, scroll, scroll, scroll;
   color: var(--text);
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.65;
@@ -74,6 +77,8 @@ a {
   grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
   gap: clamp(32px, 7vw, 88px);
   align-items: center;
+  border-radius: 24px;
+  padding: clamp(0px, 2vw, 18px);
 }
 
 .hero-title {
@@ -174,7 +179,7 @@ a {
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none;
-  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
 .btn:hover {
@@ -205,9 +210,22 @@ a {
   box-shadow: 0 24px 60px rgba(37, 99, 235, 0.13);
 }
 
+.code-window-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px) 0 0 / 32px 32px;
+  opacity: 0.22;
+}
+
 .code-window-bg::after {
   content: "";
   position: absolute;
+  z-index: 2;
   left: 0;
   right: 0;
   bottom: 0;
@@ -228,6 +246,7 @@ a {
 .code-overlay {
   position: absolute;
   inset: 0;
+  z-index: 3;
   pointer-events: none;
   background: linear-gradient(to top, rgba(15, 23, 42, 0.3), transparent 42%);
 }
@@ -269,7 +288,7 @@ a {
 
 .section {
   padding: 54px 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(49, 87, 213, 0.12);
 }
 
 .section h2 {
@@ -316,10 +335,11 @@ a {
 .contact p {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(49, 87, 213, 0.12);
   border-radius: var(--radius);
-  background: var(--surface);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), #ffffff);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.045);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .timeline-item::before,
@@ -355,6 +375,7 @@ a {
 .cert-card:hover {
   border-color: rgba(37, 99, 235, 0.28);
   box-shadow: 0 12px 28px rgba(37, 99, 235, 0.08);
+  transform: translateY(-2px);
 }
 
 .timeline-item h3,
@@ -507,14 +528,24 @@ a {
 }
 
 .reveal {
+  --reveal-y: 18px;
   opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.28s ease, transform 0.28s ease;
+  transform: translate3d(0, var(--reveal-y), 0) scale(0.985);
+  transition: opacity 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.from-top {
+  --reveal-y: -18px;
+}
+
+.reveal.from-bottom {
+  --reveal-y: 18px;
 }
 
 .reveal.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 .modal-overlay {
@@ -733,6 +764,10 @@ a {
 }
 
 @media (max-width: 840px) {
+  body {
+    background-attachment: scroll;
+  }
+
   .hero {
     min-height: auto;
     padding-top: 54px;
@@ -761,6 +796,15 @@ a {
 }
 
 @media (max-width: 560px) {
+  body {
+    background:
+      linear-gradient(90deg, rgba(49, 87, 213, 0.04) 1px, transparent 1px) 0 0 / 34px 34px,
+      linear-gradient(rgba(15, 143, 168, 0.035) 1px, transparent 1px) 0 0 / 34px 34px,
+      radial-gradient(circle at 10% 0%, rgba(49, 87, 213, 0.14), transparent 18rem),
+      radial-gradient(circle at 92% 6%, rgba(15, 159, 119, 0.1), transparent 16rem),
+      linear-gradient(180deg, #fbfdff 0%, var(--bg) 52%, #ffffff 100%);
+  }
+
   .hero,
   .section {
     width: min(100% - 28px, 1120px);
@@ -777,6 +821,10 @@ a {
   .profile-info::before {
     margin-bottom: 14px;
     font-size: 0.68rem;
+  }
+
+  .profile-split {
+    padding: 0;
   }
 
   .hero-role {
@@ -810,6 +858,14 @@ a {
 
   .section {
     padding: 42px 0;
+  }
+
+  .reveal {
+    --reveal-y: 14px;
+  }
+
+  .reveal.from-top {
+    --reveal-y: -14px;
   }
 
   .section h2 {

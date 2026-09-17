@@ -66,16 +66,27 @@ function initReveal() {
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+      const directionClass = entry.boundingClientRect.top < 0 ? "from-top" : "from-bottom";
+
+      entry.target.classList.remove("from-top", "from-bottom");
+      entry.target.classList.add(directionClass);
+
+      if (!entry.isIntersecting) {
+        entry.target.classList.remove("active");
+        return;
+      }
 
       entry.target.classList.add("active");
-      observer.unobserve(entry.target);
     });
   }, {
-    threshold: 0.1
+    rootMargin: "-8% 0px -8% 0px",
+    threshold: 0.12
   });
 
-  reveals.forEach(element => observer.observe(element));
+  reveals.forEach(element => {
+    element.classList.add("from-bottom");
+    observer.observe(element);
+  });
 }
 
 function initModals() {
