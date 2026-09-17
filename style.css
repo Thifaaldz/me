@@ -1,11 +1,15 @@
 :root {
-  --bg: #f7f8fa;
+  --bg: #f8fbff;
   --surface: #ffffff;
-  --surface-soft: #f1f4f8;
+  --surface-soft: #eef5ff;
   --text: #172033;
   --muted: #667085;
   --line: #d8dee8;
   --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.1);
+  --cyan: #0891b2;
+  --emerald: #059669;
+  --amber: #d97706;
   --radius: 10px;
   --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
 }
@@ -23,7 +27,10 @@ html {
 body {
   min-height: 100vh;
   overflow-x: hidden;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 8% 4%, rgba(37, 99, 235, 0.13), transparent 26rem),
+    radial-gradient(circle at 95% 0%, rgba(8, 145, 178, 0.12), transparent 24rem),
+    linear-gradient(180deg, #fbfdff 0%, var(--bg) 48%, #ffffff 100%);
   color: var(--text);
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.65;
@@ -78,6 +85,21 @@ a {
   letter-spacing: 0;
 }
 
+.profile-info::before {
+  content: "portfolio.system / active";
+  display: inline-flex;
+  margin-bottom: 18px;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  border-radius: 999px;
+  padding: 7px 11px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--accent);
+  font-family: "Fira Code", monospace;
+  font-size: 0.74rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
+}
+
 .hero-role {
   display: flex;
   flex-wrap: wrap;
@@ -102,6 +124,24 @@ a {
   font-size: 0.76rem;
   font-weight: 600;
   line-height: 1.25;
+}
+
+.hero-role span:nth-of-type(1) {
+  border-color: rgba(37, 99, 235, 0.2);
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+}
+
+.hero-role span:nth-of-type(2) {
+  border-color: rgba(8, 145, 178, 0.2);
+  background: rgba(8, 145, 178, 0.08);
+  color: #0e7490;
+}
+
+.hero-role span:nth-of-type(3) {
+  border-color: rgba(5, 150, 105, 0.2);
+  background: rgba(5, 150, 105, 0.08);
+  color: #047857;
 }
 
 .hero-desc {
@@ -145,23 +185,34 @@ a {
 
 .btn.primary {
   border-color: var(--accent);
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--cyan));
   color: #ffffff;
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
 }
 
 .btn.primary:hover {
-  background: #1d4ed8;
+  background: linear-gradient(135deg, #1d4ed8, #0e7490);
   color: #ffffff;
 }
 
 .code-window-bg {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(37, 99, 235, 0.18);
   border-radius: 14px;
   min-height: 480px;
   background: var(--surface) url("assets/profile.jpg") center / cover no-repeat;
-  box-shadow: var(--shadow);
+  box-shadow: 0 24px 60px rgba(37, 99, 235, 0.13);
+}
+
+.code-window-bg::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent), var(--cyan), var(--emerald), var(--amber));
 }
 
 .profile-bg-image {
@@ -222,10 +273,23 @@ a {
 }
 
 .section h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 22px;
   font-family: "Space Grotesk", "Inter", sans-serif;
   font-size: clamp(1.5rem, 3vw, 2.35rem);
   line-height: 1.1;
+}
+
+.section h2::before {
+  content: "";
+  flex: 0 0 10px;
+  width: 10px;
+  height: 34px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), var(--cyan));
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.16);
 }
 
 .section p {
@@ -250,10 +314,25 @@ a {
 .project-card,
 .cert-card,
 .contact p {
+  position: relative;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.timeline-item::before,
+.skill-card::before,
+.tech-category::before,
+.project-card::before,
+.cert-card::before,
+.contact p::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--accent), var(--cyan));
 }
 
 .timeline-item,
@@ -274,8 +353,8 @@ a {
 .tech-category:hover,
 .project-card:hover,
 .cert-card:hover {
-  border-color: #b7c3d7;
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.07);
+  border-color: rgba(37, 99, 235, 0.28);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.08);
 }
 
 .timeline-item h3,
@@ -325,12 +404,22 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(37, 99, 235, 0.14);
   border-radius: 999px;
   padding: 7px 10px;
-  background: var(--surface-soft);
+  background: rgba(37, 99, 235, 0.07);
   color: var(--text);
   font-size: 0.86rem;
+}
+
+.tech-badge-icon:nth-child(3n + 2) {
+  border-color: rgba(8, 145, 178, 0.16);
+  background: rgba(8, 145, 178, 0.07);
+}
+
+.tech-badge-icon:nth-child(3n + 3) {
+  border-color: rgba(5, 150, 105, 0.16);
+  background: rgba(5, 150, 105, 0.07);
 }
 
 .tech-badge-icon img {
@@ -655,7 +744,9 @@ a {
   }
 
   .code-window-bg {
+    width: 100%;
     max-width: 360px;
+    justify-self: center;
   }
 
   .hero-actions,
@@ -675,12 +766,81 @@ a {
     width: min(100% - 28px, 1120px);
   }
 
+  .hero {
+    padding: 34px 0 36px;
+  }
+
   .hero-title {
     font-size: clamp(2.3rem, 13vw, 3.7rem);
   }
 
+  .profile-info::before {
+    margin-bottom: 14px;
+    font-size: 0.68rem;
+  }
+
+  .hero-role {
+    gap: 7px;
+    margin: 18px 0 16px;
+  }
+
+  .hero-role span {
+    padding: 6px 9px;
+    font-size: 0.7rem;
+  }
+
+  .hero-desc {
+    margin-bottom: 22px;
+    font-size: 0.98rem;
+  }
+
+  .btn {
+    min-height: 44px;
+    padding: 10px 13px;
+  }
+
+  .code-window-bg {
+    max-width: 100%;
+    min-height: 430px;
+  }
+
+  .profile-bg-image {
+    min-height: 430px;
+  }
+
   .section {
     padding: 42px 0;
+  }
+
+  .section h2 {
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .section h2::before {
+    flex-basis: 8px;
+    width: 8px;
+    height: 28px;
+  }
+
+  .timeline,
+  .tech-stack,
+  .skills-grid,
+  .projects-grid,
+  .cert-grid {
+    gap: 12px;
+  }
+
+  .timeline-item,
+  .skill-card,
+  .tech-category,
+  .contact p {
+    padding: 16px;
+  }
+
+  .project-card img,
+  .cert-card img.cert-img-thumb {
+    height: 160px;
   }
 
   .modal {
